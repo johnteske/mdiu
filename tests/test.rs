@@ -3,9 +3,9 @@ use mu_lines::*;
 
 fn kitchen_sink() -> Lines {
     let mut lines = Lines::new();
-    lines.add(Line::H1("title".into()));
-    lines.add(Line::H2("section".into()));
-    lines.add(Line::H3("subsection".into()));
+    lines.add(Line::Heading(Level::One, "title".into()));
+    lines.add(Line::Heading(Level::Two, "section".into()));
+    lines.add(Line::Heading(Level::Three, "subsection".into()));
     lines.add(Line::Text("text".into()));
     lines.add(Line::Link(Link(
         Uri::from_static("a-link"),

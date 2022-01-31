@@ -1,4 +1,4 @@
-use super::{FileExtension, FormatLine, Line, Link};
+use super::{FileExtension, FormatLine, Level, Line, Link};
 
 pub struct Html;
 
@@ -37,9 +37,9 @@ impl FormatLine for Html {
 
                     b
                 }
-                Line::H1(text) => format!("<h1>{}</h1>\n", text),
-                Line::H2(text) => format!("<h2>{}</h2>\n", text),
-                Line::H3(text) => format!("<h3>{}</h3>\n", text),
+                Line::Heading(Level::One, text) => format!("<h1>{}</h1>\n", text),
+                Line::Heading(Level::Two, text) => format!("<h2>{}</h2>\n", text),
+                Line::Heading(Level::Three, text) => format!("<h3>{}</h3>\n", text),
             };
 
             s += &l;

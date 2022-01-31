@@ -10,9 +10,7 @@ pub use html::Html;
 pub enum Line {
     Text(String),
     Link(Link),
-    H1(String),
-    H2(String),
-    H3(String),
+    Heading(Level, String),
     // TODO unordered list
     // TODO blockquote
     // TODO preformatted
@@ -22,7 +20,14 @@ pub enum Line {
 #[derive(Clone, Debug)]
 pub struct Link(pub Uri, pub Option<String>);
 
-#[derive(Default)]
+#[derive(Clone, Debug)]
+pub enum Level {
+    One,
+    Two,
+    Three,
+}
+
+#[derive(Debug, Default)]
 pub struct Lines(Vec<Line>);
 
 impl Lines {
