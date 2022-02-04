@@ -50,3 +50,15 @@ impl Link {
         &mut self.label
     }
 }
+
+/// ```
+/// use mu_lines::Link;
+/// use http::uri::Uri;
+/// let uri = Uri::from_static("index.gmi");
+/// let link = Link::from(uri);
+/// ```
+impl From<Uri> for Link {
+    fn from(uri: Uri) -> Link {
+        Link::new(uri, None)
+    }
+}

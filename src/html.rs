@@ -1,4 +1,4 @@
-use super::{FileExtension, FormatLine, Level, Line, Link};
+use super::{FileExtension, FormatLine, Level, Line};
 
 pub struct Html;
 
