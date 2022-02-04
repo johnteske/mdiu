@@ -12,13 +12,22 @@ impl FormatLine for Html {
         while let Some(line) = iter.next() {
             let l = match line {
                 Line::Text(text) => format!("<p>{}</p>\n", text),
-                Line::Link(Link(url, text)) => {
+                Line::Link(link) => {
                     let next_line_is_link = matches!(iter.peek(), Some(Line::Link(_)));
-                    wrap_list_item(&mut state, next_line_is_link, |wrapper| match text {
-                        Some(text) => {
-                            format!("<{0}><a href=\"{1}\">{2}</a></{0}>\n", wrapper, url, text)
+                    wrap_list_item(&mut state, next_line_is_link, |wrapper| {
+                        match link.label() {
+                            Some(label) => {
+                                format!(
+                                    "<{0}><a href=\"{1}\">{2}</a></{0}>\n",
+                                    wrapper,
+                                    link.uri(),
+                                    label
+                                )
+                            }
+                            None => {
+                                format!("<{0}><a href=\"{1}\">{1}</a></{0}>\n", wrapper, link.uri())
+                            }
                         }
-                        None => format!("<{0}><a href=\"{1}\">{1}</a></{0}>\n", wrapper, url),
                     })
                 }
                 Line::Heading(Level::One, text) => format!("<h1>{}</h1>\n", text),

@@ -7,14 +7,14 @@ fn kitchen_sink() -> Lines {
     lines.add(Line::Heading(Level::Two, "section".into()));
     lines.add(Line::Heading(Level::Three, "subsection".into()));
     lines.add(Line::Text("text".into()));
-    lines.add(Line::Link(Link(
+    lines.add(Line::Link(Link::new(
         Uri::from_static("one-link"),
         Some("one link".into()),
     )));
     lines.add(Line::Text("more text".into()));
     lines.add(Line::ListItem("one item".into()));
-    lines.add(Line::Link(Link(Uri::from_static("no-text"), None)));
-    lines.add(Line::Link(Link(
+    lines.add(Line::Link(Link::new(Uri::from_static("no-text"), None)));
+    lines.add(Line::Link(Link::new(
         Uri::from_static("with-text"),
         Some("with text".into()),
     )));

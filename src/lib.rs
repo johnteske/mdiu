@@ -1,4 +1,5 @@
-use http::uri::Uri;
+mod link;
+pub use link::Link;
 
 mod gemtext;
 pub use gemtext::Gemtext;
@@ -16,9 +17,6 @@ pub enum Line {
     // TODO preformatted
     // TODO blank line
 }
-
-#[derive(Clone, Debug)]
-pub struct Link(pub Uri, pub Option<String>);
 
 #[derive(Clone, Debug)]
 pub enum Level {
