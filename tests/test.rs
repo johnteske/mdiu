@@ -11,6 +11,7 @@ fn kitchen_sink() -> Lines {
         Uri::from_static("one-link"),
         Some("one link".into()),
     )));
+    lines.add(Line::Quote("quote".into()));
     lines.add(Line::Text("more text".into()));
     lines.add(Line::ListItem("one item".into()));
     lines.add(Line::Link(Link::new(Uri::from_static("no-text"), None)));
@@ -30,6 +31,7 @@ fn gemtext() {
 ### subsection
 text
 => one-link one link
+> quote
 more text
 * one item
 => no-text
@@ -48,6 +50,7 @@ fn html() {
 <h3>subsection</h3>
 <p>text</p>
 <p><a href="one-link">one link</a></p>
+<blockquote>quote</blockquote>
 <p>more text</p>
 <p>one item</p>
 <ul>

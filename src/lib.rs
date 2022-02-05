@@ -13,7 +13,7 @@ pub enum Line {
     Link(Link),
     Heading(Level, String),
     ListItem(String),
-    // TODO blockquote
+    Quote(String),
     // TODO preformatted
     // TODO blank line
 }

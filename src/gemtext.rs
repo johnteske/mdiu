@@ -14,6 +14,7 @@ impl FormatLine for Gemtext {
             Line::Heading(Level::Two, text) => format!("## {}\n", text),
             Line::Heading(Level::Three, text) => format!("### {}\n", text),
             Line::ListItem(text) => format!("* {}\n", text),
+            Line::Quote(text) => format!("> {}\n", text),
         })
         .collect::<String>()
     }
