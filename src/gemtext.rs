@@ -1,4 +1,4 @@
-use super::{FileExtension, FormatLine, Level, Line};
+use super::{FormatLine, Level, Line};
 
 pub struct Gemtext;
 
@@ -23,8 +23,4 @@ impl FormatLine for Gemtext {
         })
         .collect::<String>()
     }
-}
-
-impl FileExtension for Gemtext {
-    const FILE_EXTENSION: &'static str = "gmi";
 }

@@ -1,4 +1,4 @@
-use super::{FileExtension, FormatLine, Level, Line};
+use super::{FormatLine, Level, Line};
 
 pub struct Html;
 
@@ -82,8 +82,4 @@ fn wrap_list_item(
     }
 
     b
-}
-
-impl FileExtension for Html {
-    const FILE_EXTENSION: &'static str = "html";
 }

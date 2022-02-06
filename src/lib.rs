@@ -55,7 +55,3 @@ impl Lines {
 pub trait FormatLine {
     fn format<'a, I: Iterator<Item = &'a Line>>(iter: I) -> String;
 }
-
-pub trait FileExtension {
-    const FILE_EXTENSION: &'static str;
-}
