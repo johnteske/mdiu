@@ -1,6 +1,9 @@
 mod link;
 pub use link::Link;
 
+mod preformatted;
+pub use preformatted::Preformatted;
+
 mod gemtext;
 pub use gemtext::Gemtext;
 
