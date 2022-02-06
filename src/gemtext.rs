@@ -19,6 +19,7 @@ impl FormatLine for Gemtext {
                 Some(alt) => format!("```{}\n{}\n```\n", alt, pre.text()),
                 None => format!("```\n{}\n```\n", pre.text()),
             },
+            Line::Empty => "\n".to_string(),
         })
         .collect::<String>()
     }

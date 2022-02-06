@@ -6,6 +6,7 @@ fn kitchen_sink() -> Lines {
     lines.add(Line::Heading(Level::One, "title".into()));
     lines.add(Line::Heading(Level::Two, "section".into()));
     lines.add(Line::Heading(Level::Three, "subsection".into()));
+    lines.add(Line::Empty);
     lines.add(Line::Text("text".into()));
     lines.add(Line::Link(Link::new(
         Uri::from_static("one-link"),
@@ -34,6 +35,7 @@ fn gemtext() {
     let expected = r#"# title
 ## section
 ### subsection
+
 text
 => one-link one link
 > quote
