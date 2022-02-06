@@ -1,3 +1,5 @@
+use http::uri::Uri;
+
 mod link;
 pub use link::Link;
 
@@ -28,6 +30,7 @@ pub enum Level {
     Three,
 }
 
+/// A builder to create a document by `Line`
 #[derive(Debug, Default)]
 pub struct Lines(Vec<Line>);
 
@@ -36,16 +39,52 @@ impl Lines {
         Self::default()
     }
 
-    /// ```
-    /// # use mu_lines::{Line, Lines};
-    /// let mut lines = Lines::new();
-    /// lines.add(Line::Text("hello".into()));
-    /// ```
-    pub fn add(&mut self, line: Line) {
-        // TODO check no newlines
+    fn push(mut self, line: Line) -> Self {
         self.0.push(line);
+        self
     }
+
+    // TODO check no newlines
     // TODO add_unchecked
+
+    pub fn text(self, text: String) -> Self {
+        self.push(Line::Text(text))
+    }
+
+    pub fn link(self, uri: Uri, label: Option<String>) -> Self {
+        self.push(Line::Link(Link::new(uri, label)))
+    }
+
+    pub fn h1(self, text: String) -> Self {
+        self.push(Line::Heading(Level::One, text))
+    }
+
+    pub fn h2(self, text: String) -> Self {
+        self.push(Line::Heading(Level::Two, text))
+    }
+
+    pub fn h3(self, text: String) -> Self {
+        self.push(Line::Heading(Level::Three, text))
+    }
+
+    pub fn list_item(self, text: String) -> Self {
+        self.push(Line::ListItem(text))
+    }
+
+    pub fn quote(self, text: String) -> Self {
+        self.push(Line::Quote(text))
+    }
+
+    pub fn preformatted(self, text: String, alt: Option<String>) -> Self {
+        self.push(Line::Preformatted(Preformatted::new(text, alt)))
+    }
+
+    pub fn empty(self) -> Self {
+        self.push(Line::Empty)
+    }
+
+    // iter
+    // collect
 
     pub fn to_string<F>(&self) -> String
     where

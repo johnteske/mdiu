@@ -2,32 +2,22 @@ use http::uri::Uri;
 use mu_lines::*;
 
 fn kitchen_sink() -> Lines {
-    let mut lines = Lines::new();
-    lines.add(Line::Heading(Level::One, "title".into()));
-    lines.add(Line::Heading(Level::Two, "section".into()));
-    lines.add(Line::Heading(Level::Three, "subsection".into()));
-    lines.add(Line::Empty);
-    lines.add(Line::Text("text".into()));
-    lines.add(Line::Link(Link::new(
-        Uri::from_static("one-link"),
-        Some("one link".into()),
-    )));
-    lines.add(Line::Quote("quote".into()));
-    lines.add(Line::Preformatted(Preformatted::new("@_@".into(), None)));
-    lines.add(Line::Text("more text".into()));
-    lines.add(Line::Preformatted(Preformatted::new(
-        "@_@".into(),
-        Some("emoticon".into()),
-    )));
-    lines.add(Line::ListItem("one item".into()));
-    lines.add(Line::Link(Link::new(Uri::from_static("no-text"), None)));
-    lines.add(Line::Link(Link::new(
-        Uri::from_static("with-text"),
-        Some("with text".into()),
-    )));
-    lines.add(Line::ListItem("an item".into()));
-    lines.add(Line::ListItem("another item".into()));
-    lines
+    Lines::new()
+        .h1("title".to_string())
+        .h2("section".to_string())
+        .h3("subsection".into())
+        .empty()
+        .text("text".into())
+        .link(Uri::from_static("one-link"), Some("one link".into()))
+        .quote("quote".into())
+        .preformatted("@_@".into(), None)
+        .text("more text".into())
+        .preformatted("@_@".into(), Some("emoticon".into()))
+        .list_item("one item".into())
+        .link(Uri::from_static("no-text"), None)
+        .link(Uri::from_static("with-text"), Some("with text".into()))
+        .list_item("an item".into())
+        .list_item("another item".into())
 }
 
 #[test]
