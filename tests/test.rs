@@ -12,7 +12,12 @@ fn kitchen_sink() -> Lines {
         Some("one link".into()),
     )));
     lines.add(Line::Quote("quote".into()));
+    lines.add(Line::Preformatted(Preformatted::new("@_@".into(), None)));
     lines.add(Line::Text("more text".into()));
+    lines.add(Line::Preformatted(Preformatted::new(
+        "@_@".into(),
+        Some("emoticon".into()),
+    )));
     lines.add(Line::ListItem("one item".into()));
     lines.add(Line::Link(Link::new(Uri::from_static("no-text"), None)));
     lines.add(Line::Link(Link::new(
@@ -32,7 +37,13 @@ fn gemtext() {
 text
 => one-link one link
 > quote
+```
+@_@
+```
 more text
+```emoticon
+@_@
+```
 * one item
 => no-text
 => with-text with text
@@ -51,7 +62,13 @@ fn html() {
 <p>text</p>
 <p><a href="one-link">one link</a></p>
 <blockquote>quote</blockquote>
+<pre>
+@_@
+</pre>
 <p>more text</p>
+<pre>
+@_@
+</pre>
 <p>one item</p>
 <ul>
 <li><a href="no-text">no-text</a></li>

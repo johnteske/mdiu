@@ -26,10 +26,7 @@ impl Link {
     /// let link = Link::with_label(Uri::from_static("index.gmi"), "my gemlog".to_string());
     /// ```
     pub fn with_label(uri: Uri, label: String) -> Self {
-        Link {
-            uri,
-            label: Some(label),
-        }
+        Link::new(uri, Some(label))
     }
 
     /// Returns a reference to the URI

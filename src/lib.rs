@@ -14,8 +14,7 @@ pub enum Line {
     Heading(Level, String),
     ListItem(String),
     Quote(String),
-    // TODO preformatted
-    // TODO blank line
+    Preformatted(Preformatted), // TODO blank line
 }
 
 #[derive(Clone, Debug)]

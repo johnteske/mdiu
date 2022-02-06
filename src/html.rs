@@ -40,6 +40,7 @@ impl FormatLine for Html {
                     })
                 }
                 Line::Quote(text) => format!("<blockquote>{}</blockquote>\n", text),
+                Line::Preformatted(pre) => format!("<pre>\n{}\n</pre>\n", pre.text()),
             };
 
             s += &l;
