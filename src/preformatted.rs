@@ -1,7 +1,9 @@
+use super::Content;
+
 #[derive(Clone, Debug)]
 pub struct Preformatted {
     text: String,
-    alt: Option<String>,
+    alt: Option<Content>,
 }
 
 impl Preformatted {
@@ -9,9 +11,9 @@ impl Preformatted {
     ///
     /// ```
     /// use mu_lines::Preformatted;
-    /// let pre = Preformatted::new("@_@".to_string(), Some("emoticon".to_string()));
+    /// let pre = Preformatted::new("@_@".to_string(), Some("emoticon".try_into().unwrap()));
     /// ```
-    pub fn new(text: String, alt: Option<String>) -> Self {
+    pub fn new(text: String, alt: Option<Content>) -> Self {
         Preformatted { text, alt }
     }
 
@@ -19,9 +21,9 @@ impl Preformatted {
     ///
     /// ```
     /// use mu_lines::Preformatted;
-    /// let pre = Preformatted::with_alt("@_@".to_string(), "emoticon".to_string());
+    /// let pre = Preformatted::with_alt("@_@".to_string(), "emoticon".try_into().unwrap());
     /// ```
-    pub fn with_alt(text: String, alt: String) -> Self {
+    pub fn with_alt(text: String, alt: Content) -> Self {
         Preformatted::new(text, Some(alt))
     }
 
@@ -35,11 +37,11 @@ impl Preformatted {
     }
 
     /// Returns a reference to the alt text
-    pub fn alt(&self) -> &Option<String> {
+    pub fn alt(&self) -> &Option<Content> {
         &self.alt
     }
     /// Returns a mutable reference to the alt text
-    pub fn alt_mut(&mut self) -> &mut Option<String> {
+    pub fn alt_mut(&mut self) -> &mut Option<Content> {
         &mut self.alt
     }
 }

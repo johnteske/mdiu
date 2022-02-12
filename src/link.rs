@@ -1,9 +1,10 @@
+use super::Content;
 use http::uri::Uri;
 
 #[derive(Clone, Debug)]
 pub struct Link {
     uri: Uri,
-    label: Option<String>,
+    label: Option<Content>,
 }
 
 impl Link {
@@ -12,9 +13,9 @@ impl Link {
     /// ```
     /// use mu_lines::Link;
     /// use http::uri::Uri;
-    /// let link = Link::new(Uri::from_static("index.gmi"), Some("my gemlog".to_string()));
+    /// let link = Link::new(Uri::from_static("index.gmi"), Some("my gemlog".try_into().unwrap()));
     /// ```
-    pub fn new(uri: Uri, label: Option<String>) -> Self {
+    pub fn new(uri: Uri, label: Option<Content>) -> Self {
         Link { uri, label }
     }
 
@@ -23,9 +24,9 @@ impl Link {
     /// ```
     /// use mu_lines::Link;
     /// use http::uri::Uri;
-    /// let link = Link::with_label(Uri::from_static("index.gmi"), "my gemlog".to_string());
+    /// let link = Link::with_label(Uri::from_static("index.gmi"), "my gemlog".try_into().unwrap());
     /// ```
-    pub fn with_label(uri: Uri, label: String) -> Self {
+    pub fn with_label(uri: Uri, label: Content) -> Self {
         Link::new(uri, Some(label))
     }
 
@@ -39,11 +40,11 @@ impl Link {
     }
 
     /// Returns a reference to the label
-    pub fn label(&self) -> &Option<String> {
+    pub fn label(&self) -> &Option<Content> {
         &self.label
     }
     /// Returns a mutable reference to the label
-    pub fn label_mut(&mut self) -> &mut Option<String> {
+    pub fn label_mut(&mut self) -> &mut Option<Content> {
         &mut self.label
     }
 }

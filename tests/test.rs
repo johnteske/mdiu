@@ -1,23 +1,26 @@
 use http::uri::Uri;
 use mu_lines::*;
 
-fn kitchen_sink() -> Lines {
-    Lines::new()
-        .h1("title".to_string())
-        .h2("section".to_string())
-        .h3("subsection".into())
+fn kitchen_sink() -> Result<Vec<Line>, ()> {
+    let lines = Lines::new()
+        .h1("title")?
+        .h2("section")?
+        .h3("subsection")?
         .empty()
-        .text("text".into())
-        .link(Uri::from_static("one-link"), Some("one link".into()))
-        .quote("quote".into())
-        .preformatted("@_@".into(), None)
-        .text("more text".into())
-        .preformatted("@_@".into(), Some("emoticon".into()))
-        .list_item("one item".into())
-        .link(Uri::from_static("no-text"), None)
-        .link(Uri::from_static("with-text"), Some("with text".into()))
-        .list_item("an item".into())
-        .list_item("another item".into())
+        .text("text")?
+        .link_with_label(Uri::from_static("one-link"), "one link")?
+        .quote("quote")?
+        .preformatted("@_@".to_string())
+        .text("more text")?
+        .preformatted_with_alt("@_@".into(), "emoticon")?
+        .list_item("one item")?
+        .link(Uri::from_static("no-text"))
+        .link_with_label(Uri::from_static("with-text"), "with text")?
+        .list_item("an item")?
+        .list_item("another item")?
+        .build();
+
+    Ok(lines)
 }
 
 #[test]
@@ -43,7 +46,7 @@ more text
 * another item
 "#;
 
-    assert_eq!(expected, kitchen_sink().to_string::<Gemtext>());
+    assert_eq!(expected, to_string::<Gemtext>(&kitchen_sink().unwrap()));
 }
 
 #[test]
@@ -72,5 +75,5 @@ fn html() {
 </ul>
 "#;
 
-    assert_eq!(expected, kitchen_sink().to_string::<Html>());
+    assert_eq!(expected, to_string::<Html>(&kitchen_sink().unwrap()));
 }
