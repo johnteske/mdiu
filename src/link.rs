@@ -1,6 +1,7 @@
 use super::Content;
 use http::uri::Uri;
 
+/// A [Uri] with optional label
 #[derive(Clone, Debug)]
 pub struct Link {
     uri: Uri,

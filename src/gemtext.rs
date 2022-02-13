@@ -1,25 +1,25 @@
-use super::{FormatLine, Level, Line};
+use super::{Block, FormatBlocks, Level};
 
 pub struct Gemtext;
 
-impl FormatLine for Gemtext {
-    fn format<'a, I: Iterator<Item = &'a Line>>(iter: I) -> String {
-        iter.map(|line| match line {
-            Line::Text(text) => format!("{}\n", text),
-            Line::Link(link) => match link.label() {
+impl FormatBlocks for Gemtext {
+    fn format<'a, I: Iterator<Item = &'a Block>>(iter: I) -> String {
+        iter.map(|block| match block {
+            Block::Text(text) => format!("{}\n", text),
+            Block::Link(link) => match link.label() {
                 Some(label) => format!("=> {} {}\n", link.uri(), label),
                 None => format!("=> {}\n", link.uri()),
             },
-            Line::Heading(Level::One, text) => format!("# {}\n", text),
-            Line::Heading(Level::Two, text) => format!("## {}\n", text),
-            Line::Heading(Level::Three, text) => format!("### {}\n", text),
-            Line::ListItem(text) => format!("* {}\n", text),
-            Line::Quote(text) => format!("> {}\n", text),
-            Line::Preformatted(pre) => match pre.alt() {
+            Block::Heading(Level::One, text) => format!("# {}\n", text),
+            Block::Heading(Level::Two, text) => format!("## {}\n", text),
+            Block::Heading(Level::Three, text) => format!("### {}\n", text),
+            Block::ListItem(text) => format!("* {}\n", text),
+            Block::Quote(text) => format!("> {}\n", text),
+            Block::Preformatted(pre) => match pre.alt() {
                 Some(alt) => format!("```{}\n{}\n```\n", alt, pre.text()),
                 None => format!("```\n{}\n```\n", pre.text()),
             },
-            Line::Empty => "\n".to_string(),
+            Block::Empty => "\n".to_string(),
         })
         .collect::<String>()
     }

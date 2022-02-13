@@ -1,8 +1,8 @@
 use http::uri::Uri;
 use mu_lines::*;
 
-fn kitchen_sink() -> Result<Vec<Line>, ()> {
-    let lines = Lines::new()
+fn kitchen_sink() -> Result<Vec<Block>, ()> {
+    let lines = DocBuilder::new()
         .h1("title")?
         .h2("section")?
         .h3("subsection")?
@@ -46,7 +46,7 @@ more text
 * another item
 "#;
 
-    assert_eq!(expected, to_string::<Gemtext>(&kitchen_sink().unwrap()));
+    assert_eq!(expected, format::<Gemtext>(&kitchen_sink().unwrap()));
 }
 
 #[test]
@@ -75,5 +75,5 @@ fn html() {
 </ul>
 "#;
 
-    assert_eq!(expected, to_string::<Html>(&kitchen_sink().unwrap()));
+    assert_eq!(expected, format::<Html>(&kitchen_sink().unwrap()));
 }

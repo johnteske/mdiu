@@ -1,5 +1,6 @@
 use super::Content;
 
+/// Preformatted text
 #[derive(Clone, Debug)]
 pub struct Preformatted {
     text: String,
