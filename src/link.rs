@@ -1,7 +1,7 @@
-use super::Content;
+use crate::Content;
 use http::uri::Uri;
 
-/// A [Uri] with optional label
+/// A URI with optional label
 #[derive(Clone, Debug)]
 pub struct Link {
     uri: Uri,
@@ -12,7 +12,7 @@ impl Link {
     /// Constructs a new `Link`
     ///
     /// ```
-    /// use mu_lines::Link;
+    /// # use mu_lines::Link;
     /// use http::uri::Uri;
     /// let link = Link::new(Uri::from_static("index.gmi"), Some("my gemlog".try_into().unwrap()));
     /// ```
@@ -20,10 +20,10 @@ impl Link {
         Link { uri, label }
     }
 
-    /// Constructs a new `Link` with a label
+    /// Constructs a new `Link` with label
     ///
     /// ```
-    /// use mu_lines::Link;
+    /// # use mu_lines::Link;
     /// use http::uri::Uri;
     /// let link = Link::with_label(Uri::from_static("index.gmi"), "my gemlog".try_into().unwrap());
     /// ```
@@ -51,7 +51,7 @@ impl Link {
 }
 
 /// ```
-/// use mu_lines::Link;
+/// # use mu_lines::Link;
 /// use http::uri::Uri;
 /// let uri = Uri::from_static("index.gmi");
 /// let link = Link::from(uri);

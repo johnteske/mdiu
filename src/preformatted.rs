@@ -1,6 +1,6 @@
-use super::Content;
+use crate::Content;
 
-/// Preformatted text
+/// Preformatted text with optional alt text
 #[derive(Clone, Debug)]
 pub struct Preformatted {
     text: String,
@@ -11,7 +11,7 @@ impl Preformatted {
     /// Constructs a new `Preformatted`
     ///
     /// ```
-    /// use mu_lines::Preformatted;
+    /// # use mu_lines::Preformatted;
     /// let pre = Preformatted::new("@_@".to_string(), Some("emoticon".try_into().unwrap()));
     /// ```
     pub fn new(text: String, alt: Option<Content>) -> Self {
@@ -21,7 +21,7 @@ impl Preformatted {
     /// Constructs a new `Preformatted` with alt text
     ///
     /// ```
-    /// use mu_lines::Preformatted;
+    /// # use mu_lines::Preformatted;
     /// let pre = Preformatted::with_alt("@_@".to_string(), "emoticon".try_into().unwrap());
     /// ```
     pub fn with_alt(text: String, alt: Content) -> Self {

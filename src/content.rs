@@ -1,6 +1,15 @@
 use std::fmt;
 
 /// A [String] without newlines
+///
+/// ```
+/// # use mu_lines::Content;
+/// let content: Content = "some text".try_into().unwrap();
+/// ```
+/// ```should_panic
+/// # use mu_lines::Content;
+/// let content: Content = "some\ntext".try_into().unwrap();
+/// ```
 #[derive(Debug, Clone)]
 pub struct Content(String);
 
