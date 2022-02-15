@@ -1,7 +1,7 @@
 use http::uri::Uri;
 use mu_lines::*;
 
-fn kitchen_sink() -> Result<Vec<Block>, ()> {
+fn kitchen_sink() -> Result<Vec<Block>, Error> {
     let lines = DocBuilder::new()
         .h1("title")?
         .h2("section")?

@@ -4,6 +4,9 @@ pub use builder::DocBuilder;
 mod content;
 pub use content::Content;
 
+mod error;
+pub use error::Error;
+
 mod link;
 pub use link::Link;
 

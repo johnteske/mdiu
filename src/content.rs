@@ -1,3 +1,4 @@
+use crate::error::Error;
 use std::fmt;
 
 /// A [String] without newlines
@@ -14,7 +15,7 @@ use std::fmt;
 pub struct Content(String);
 
 impl TryFrom<String> for Content {
-    type Error = ();
+    type Error = Error;
 
     fn try_from(value: String) -> Result<Self, Self::Error> {
         validate_text(&value).map(|_| Content(value))
@@ -22,7 +23,7 @@ impl TryFrom<String> for Content {
 }
 
 impl TryFrom<&str> for Content {
-    type Error = ();
+    type Error = Error;
 
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         validate_text(value).map(|_| Content(value.to_string()))
@@ -38,9 +39,9 @@ impl fmt::Display for Content {
 // // TODO Error type would e custom--newline
 // TODO handle /r variants too
 // TODO cross platform \r combos as well
-fn validate_text(text: &str) -> Result<(), ()> {
+fn validate_text(text: &str) -> Result<(), Error> {
     if text.contains('\n') {
-        Err(())
+        Err(Error::InvalidContent)
     } else {
         Ok(())
     }
