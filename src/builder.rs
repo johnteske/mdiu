@@ -4,9 +4,13 @@ use http::uri::Uri;
 /// A builder to create a document with [Block]s
 ///
 /// ```
+/// # use std::error::Error;
+/// # fn main() -> Result<(), Box<dyn Error>> {
 /// # use mu_lines::{DocBuilder, Block};
-/// let builder = DocBuilder::new().h1("my site").unwrap();
+/// let builder = DocBuilder::new().h1("my site")?;
 /// let v: Vec<Block> = builder.build();
+/// # Ok(())
+/// # }
 /// ```
 #[derive(Debug, Default, Clone)]
 pub struct DocBuilder(Vec<Block>);
@@ -96,13 +100,17 @@ impl DocBuilder {
     /// Consumes the builder and return [Block]s
     ///
     /// ```
+    /// # use std::error::Error;
+    /// # fn main() -> Result<(), Box<dyn Error>> {
     /// # use mu_lines::{DocBuilder, format, Gemtext};
     /// let mut builder = DocBuilder::new();
-    /// builder = builder.h1("my site").unwrap();
+    /// builder = builder.h1("my site")?;
     /// let homepage = builder.clone().build();
-    /// let article = builder.h2("my article").unwrap().build();
+    /// let article = builder.h2("my article")?.build();
     /// assert_eq!(format::<Gemtext>(&homepage), "# my site\n");
     /// assert_eq!(format::<Gemtext>(&article), "# my site\n## my article\n");
+    /// # Ok(())
+    /// # }
     /// ```
     pub fn build(self) -> Vec<Block> {
         self.0

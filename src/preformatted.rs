@@ -11,8 +11,12 @@ impl Preformatted {
     /// Constructs a new `Preformatted`
     ///
     /// ```
+    /// # use std::error::Error;
+    /// # fn main() -> Result<(), Box<dyn Error>> {
     /// # use mu_lines::Preformatted;
-    /// let pre = Preformatted::new("@_@".to_string(), Some("emoticon".try_into().unwrap()));
+    /// let pre = Preformatted::new("@_@".to_string(), Some("emoticon".try_into()?));
+    /// # Ok(())
+    /// # }
     /// ```
     pub fn new(text: String, alt: Option<Content>) -> Self {
         Preformatted { text, alt }
@@ -21,8 +25,12 @@ impl Preformatted {
     /// Constructs a new `Preformatted` with alt text
     ///
     /// ```
+    /// # use std::error::Error;
+    /// # fn main() -> Result<(), Box<dyn Error>> {
     /// # use mu_lines::Preformatted;
-    /// let pre = Preformatted::with_alt("@_@".to_string(), "emoticon".try_into().unwrap());
+    /// let pre = Preformatted::with_alt("@_@".to_string(), "emoticon".try_into()?);
+    /// # Ok(())
+    /// # }
     /// ```
     pub fn with_alt(text: String, alt: Content) -> Self {
         Preformatted::new(text, Some(alt))

@@ -1,3 +1,4 @@
+use std::error;
 use std::fmt;
 
 #[derive(Debug)]
@@ -15,3 +16,5 @@ impl fmt::Display for Error {
         }
     }
 }
+
+impl error::Error for Error {}

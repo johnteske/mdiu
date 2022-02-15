@@ -4,12 +4,20 @@ use std::fmt;
 /// A [String] without newlines
 ///
 /// ```
+/// # use std::error::Error;
+/// # fn main() -> Result<(), Box<dyn Error>> {
 /// # use mu_lines::Content;
-/// let content: Content = "some text".try_into().unwrap();
+/// let content: Content = "some text".try_into()?;
+/// # Ok(())
+/// # }
 /// ```
 /// ```should_panic
+/// # use std::error::Error;
+/// # fn main() -> Result<(), Box<dyn Error>> {
 /// # use mu_lines::Content;
-/// let content: Content = "some\ntext".try_into().unwrap();
+/// let content: Content = "some\ntext".try_into()?;
+/// # Ok(())
+/// # }
 /// ```
 #[derive(Debug, Clone)]
 pub struct Content(String);
