@@ -1,7 +1,12 @@
-use crate::error::Error;
+use crate::Error;
 use std::fmt;
 
-/// A [String] without newlines
+/// A piece of text without newline characters
+///
+/// As newline characters delineate [crate::Block]s in gemtext, content should be free of them.
+///
+/// [Content] should primarily be created through a conversion that checks for
+/// `\n` and `\r` characters:
 ///
 /// ```
 /// # use std::error::Error;
@@ -11,6 +16,12 @@ use std::fmt;
 /// # Ok(())
 /// # }
 /// ```
+///
+/// If the text is known to be free of newline characters, [Content] can be created without
+/// checking using [Content::new_unchecked].
+///
+/// # Errors--doesn't error, really, just isn't valid
+/// Errors when the input contains a newline character, `\n` or `\r`
 /// ```should_panic
 /// # use std::error::Error;
 /// # fn main() -> Result<(), Box<dyn Error>> {
@@ -21,6 +32,18 @@ use std::fmt;
 /// ```
 #[derive(Debug, Clone)]
 pub struct Content(String);
+
+impl Content {
+    /// Constructs a new [Content] without checking the input
+    ///
+    /// ```
+    /// # use mu_lines::Content;
+    /// let content = Content::new_unchecked("smth");
+    /// ```
+    pub fn new_unchecked<T: Into<String>>(value: T) -> Self {
+        Content(value.into())
+    }
+}
 
 impl TryFrom<String> for Content {
     type Error = Error;
@@ -44,11 +67,8 @@ impl fmt::Display for Content {
     }
 }
 
-// // TODO Error type would e custom--newline
-// TODO handle /r variants too
-// TODO cross platform \r combos as well
 fn validate_text(text: &str) -> Result<(), Error> {
-    if text.contains('\n') {
+    if text.contains(&['\n', '\r']) {
         Err(Error::InvalidContent)
     } else {
         Ok(())

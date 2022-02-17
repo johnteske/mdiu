@@ -1,5 +1,5 @@
 mod builder;
-pub use builder::DocBuilder;
+pub use builder::Document;
 
 mod content;
 pub use content::Content;
