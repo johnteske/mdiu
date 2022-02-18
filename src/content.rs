@@ -18,28 +18,23 @@ use std::fmt;
 /// ```
 ///
 /// If the text is known to be free of newline characters, [Content] can be created without
-/// checking using [Content::new_unchecked].
+/// checking using [`new_unchecked`].
 ///
-/// # Errors--doesn't error, really, just isn't valid
-/// Errors when the input contains a newline character, `\n` or `\r`
-/// ```should_panic
-/// # use std::error::Error;
-/// # fn main() -> Result<(), Box<dyn Error>> {
-/// # use mu_lines::Content;
-/// let content: Content = "some\ntext".try_into()?;
-/// # Ok(())
-/// # }
-/// ```
+/// [`new_unchecked`]: #method.new_unchecked
 #[derive(Debug, Clone)]
 pub struct Content(String);
 
 impl Content {
     /// Constructs a new [Content] without checking the input
     ///
+    /// This method is not unsafe but its correctness is not guaranteed,
+    /// especially in the case of formatting as [`Gemtext`].
+    ///
     /// ```
     /// # use mu_lines::Content;
     /// let content = Content::new_unchecked("smth");
     /// ```
+    /// [`Gemtext`]: crate::Gemtext
     pub fn new_unchecked<T: Into<String>>(value: T) -> Self {
         Content(value.into())
     }
