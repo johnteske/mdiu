@@ -3,9 +3,9 @@ use std::fmt;
 
 /// A piece of text without newline characters
 ///
-/// As newline characters delineate [crate::Block]s in gemtext, content should be free of them.
+/// As newline characters delineate [`Block`]s in gemtext, content should be free of them.
 ///
-/// [Content] should primarily be created through a conversion that checks for
+/// [`Content`] should primarily be created through a conversion that checks for
 /// `\n` and `\r` characters:
 ///
 /// ```
@@ -17,15 +17,16 @@ use std::fmt;
 /// # }
 /// ```
 ///
-/// If the text is known to be free of newline characters, [Content] can be created without
+/// If the text is known to be free of newline characters, [`Content`] can be created without
 /// checking using [`new_unchecked`].
 ///
+/// [`Block`]: crate::Block
 /// [`new_unchecked`]: #method.new_unchecked
 #[derive(Debug, Clone)]
 pub struct Content(String);
 
 impl Content {
-    /// Constructs a new [Content] without checking the input
+    /// Constructs a new [`Content`] without checking the input
     ///
     /// This method is not unsafe but its correctness is not guaranteed,
     /// especially in the case of formatting as [`Gemtext`].

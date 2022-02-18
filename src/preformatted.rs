@@ -22,20 +22,6 @@ impl Preformatted {
         Preformatted { text, alt }
     }
 
-    /// Constructs a new `Preformatted` with alt text
-    ///
-    /// ```
-    /// # use std::error::Error;
-    /// # fn main() -> Result<(), Box<dyn Error>> {
-    /// # use mu_lines::Preformatted;
-    /// let pre = Preformatted::with_alt("@_@".to_string(), "emoticon".try_into()?);
-    /// # Ok(())
-    /// # }
-    /// ```
-    pub fn with_alt(text: String, alt: Content) -> Self {
-        Preformatted::new(text, Some(alt))
-    }
-
     /// Returns a reference to the text
     pub fn text(&self) -> &String {
         &self.text

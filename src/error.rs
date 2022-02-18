@@ -1,6 +1,7 @@
 use std::error;
 use std::fmt;
 
+/// The error type for gemtext creation and parsing
 #[derive(Debug)]
 pub enum Error {
     InvalidContent,

@@ -1,7 +1,9 @@
 use crate::{Block, Content, Level, Link, Preformatted};
 use http::uri::Uri;
 
-/// A builder to create a document with [Block]s that tries to convert input into [Content]
+/// A builder to create a document with [`Block`]s
+///
+/// TODO..that tries to convert input into [`Content`]
 ///
 /// ```
 /// # use std::error::Error;

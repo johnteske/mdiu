@@ -9,7 +9,7 @@ pub struct Link {
 }
 
 impl Link {
-    /// Constructs a new `Link`
+    /// Constructs a new [`Link`]
     ///
     /// ```
     /// # use std::error::Error;
@@ -22,21 +22,6 @@ impl Link {
     /// ```
     pub fn new(uri: Uri, label: Option<Content>) -> Self {
         Link { uri, label }
-    }
-
-    /// Constructs a new `Link` with label
-    ///
-    /// ```
-    /// # use std::error::Error;
-    /// # fn main() -> Result<(), Box<dyn Error>> {
-    /// # use mu_lines::Link;
-    /// use http::uri::Uri;
-    /// let link = Link::with_label(Uri::from_static("index.gmi"), "my gemlog".try_into()?);
-    /// # Ok(())
-    /// # }
-    /// ```
-    pub fn with_label(uri: Uri, label: Content) -> Self {
-        Link::new(uri, Some(label))
     }
 
     /// Returns a reference to the URI

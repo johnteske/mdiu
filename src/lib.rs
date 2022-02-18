@@ -31,8 +31,8 @@ pub enum Block {
     Empty,
 }
 
-/// Heading level
-#[derive(Clone, Debug)]
+/// Heading level of [`Block::Heading`]
+#[derive(Debug, Clone)]
 pub enum Level {
     One,
     Two,
@@ -40,7 +40,7 @@ pub enum Level {
 }
 
 // TODO is format() too similar to format! macro
-/// Format [Block]s
+/// Format [`Block`]s
 pub fn format<F>(blocks: &[Block]) -> String
 where
     F: FormatBlocks,
@@ -48,7 +48,7 @@ where
     <F>::format(blocks.iter())
 }
 
-/// Format an iterator of [Block]s
+/// Format an iterator of [`Block`]s
 pub trait FormatBlocks {
     fn format<'a, I: Iterator<Item = &'a Block>>(iter: I) -> String;
 }
