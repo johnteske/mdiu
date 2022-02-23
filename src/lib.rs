@@ -39,16 +39,58 @@ pub enum Level {
     Three,
 }
 
-// TODO is format() too similar to format! macro
-/// Format [`Block`]s
-pub fn format<F>(blocks: &[Block]) -> String
-where
-    F: FormatBlocks,
-{
-    <F>::format(blocks.iter())
+/// Format an iterator of [`Block`]s
+pub trait Markup {
+    fn markup<'a, I: Iterator<Item = &'a Block>>(iter: I) -> String;
 }
 
-/// Format an iterator of [`Block`]s
-pub trait FormatBlocks {
-    fn format<'a, I: Iterator<Item = &'a Block>>(iter: I) -> String;
+// TODO create_markup?
+/// Format [`Block`]s as markup `F`
+///
+/// ```
+/// use mu_lines::{Document, Gemtext, markup};
+/// let doc = Document::new().empty().build();
+/// let gemtext = markup::<Gemtext>(&doc);
+/// # assert_eq!("\n".to_string(), gemtext);
+/// ```
+pub fn markup<F>(blocks: &[Block]) -> String
+where
+    F: Markup,
+{
+    <F>::markup(blocks.iter())
+}
+
+/// Format as markup `F`
+///
+/// This trait is sealed and cannot be implemented outside of mu_lines
+pub trait ToMarkup: private::Sealed {
+    fn to_markup<F>(self) -> String
+    where
+        F: Markup;
+}
+
+/// ```
+/// use mu_lines::{Block, Gemtext, ToMarkup};
+/// let slice = &[Block::Empty];
+/// let gemtext = slice.to_markup::<Gemtext>();
+/// # assert_eq!("\n".to_string(), gemtext);
+/// ```
+impl<'a, T> ToMarkup for T
+where
+    T: IntoIterator<Item = &'a Block>,
+{
+    fn to_markup<F>(self) -> String
+    where
+        F: Markup,
+    {
+        <F>::markup(self.into_iter())
+    }
+}
+
+mod private {
+    use super::Block;
+
+    pub trait Sealed {}
+
+    impl<'a, T> Sealed for T where T: IntoIterator<Item = &'a Block> {}
 }

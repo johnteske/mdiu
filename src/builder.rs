@@ -125,13 +125,14 @@ impl Document {
     /// ```
     /// # use std::error::Error;
     /// # fn main() -> Result<(), Box<dyn Error>> {
-    /// # use mu_lines::{Document, format, Gemtext};
+    /// # use mu_lines::{Document, Gemtext, ToMarkup};
     /// let mut builder = Document::new();
     /// builder = builder.h1("my site")?;
+    /// // Explicitly clone the builder to reuse
     /// let homepage = builder.clone().build();
     /// let article = builder.h2("my article")?.build();
-    /// assert_eq!(format::<Gemtext>(&homepage), "# my site\n");
-    /// assert_eq!(format::<Gemtext>(&article), "# my site\n## my article\n");
+    /// assert_eq!(&homepage.to_markup::<Gemtext>(), "# my site\n");
+    /// assert_eq!(&article.to_markup::<Gemtext>(), "# my site\n## my article\n");
     /// # Ok(())
     /// # }
     /// ```
@@ -140,15 +141,13 @@ impl Document {
     }
 }
 
-//impl From<Document> for Vec<Block> {
-//    fn from(builder: Document) -> Self {
-//        // TODO
-//        //vec![]
-//        Document.0
-//    }
-//}
-//impl From<Vec<Block>> for Document {
-//    fn from(vec: Vec<Block>) -> Self {
-//        Document(vec)
-//    }
-//}
+/// ```
+/// use mu_lines::{Block, Document};
+/// let vec = vec![Block::Empty];
+/// let builder: Document = vec.into();
+/// ```
+impl From<Vec<Block>> for Document {
+    fn from(vec: Vec<Block>) -> Self {
+        Document(vec)
+    }
+}

@@ -1,9 +1,10 @@
-use super::{Block, FormatBlocks, Level};
+use super::{Block, Level, Markup};
 
+/// A unit representing gemtext markup
 pub struct Gemtext;
 
-impl FormatBlocks for Gemtext {
-    fn format<'a, I: Iterator<Item = &'a Block>>(iter: I) -> String {
+impl Markup for Gemtext {
+    fn markup<'a, I: Iterator<Item = &'a Block>>(iter: I) -> String {
         iter.map(|block| match block {
             Block::Text(text) => format!("{}\n", text),
             Block::Link(link) => match link.label() {

@@ -1,9 +1,10 @@
-use super::{Block, FormatBlocks, Level};
+use super::{Block, Level, Markup};
 
+/// A unit representing HTML
 pub struct Html;
 
-impl FormatBlocks for Html {
-    fn format<'a, I: Iterator<Item = &'a Block>>(iter: I) -> String {
+impl Markup for Html {
+    fn markup<'a, I: Iterator<Item = &'a Block>>(iter: I) -> String {
         let mut iter = iter.peekable();
         let mut s = String::new();
 

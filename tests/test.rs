@@ -46,7 +46,7 @@ more text
 * another item
 "#;
 
-    assert_eq!(expected, format::<Gemtext>(&kitchen_sink().unwrap()));
+    assert_eq!(expected, &kitchen_sink().unwrap().to_markup::<Gemtext>());
 }
 
 #[test]
@@ -75,5 +75,5 @@ fn html() {
 </ul>
 "#;
 
-    assert_eq!(expected, format::<Html>(&kitchen_sink().unwrap()));
+    assert_eq!(expected, markup::<Html>(&kitchen_sink().unwrap()));
 }
