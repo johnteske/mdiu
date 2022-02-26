@@ -140,14 +140,3 @@ impl Document {
         self.0
     }
 }
-
-/// ```
-/// use mu_lines::{Block, Document};
-/// let vec = vec![Block::Empty];
-/// let builder: Document = vec.into();
-/// ```
-impl From<Vec<Block>> for Document {
-    fn from(vec: Vec<Block>) -> Self {
-        Document(vec)
-    }
-}

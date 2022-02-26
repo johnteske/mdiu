@@ -49,6 +49,7 @@ more text
     assert_eq!(expected, &kitchen_sink().unwrap().to_markup::<Gemtext>());
 }
 
+#[cfg(feature = "html")]
 #[test]
 fn html() {
     let expected = r#"<h1>title</h1>
@@ -76,4 +77,37 @@ fn html() {
 "#;
 
     assert_eq!(expected, markup::<Html>(&kitchen_sink().unwrap()));
+}
+
+#[cfg(feature = "markdown")]
+#[test]
+fn markdown() {
+    let expected = r#"# title
+
+## section
+
+### subsection
+
+text
+
+[one link](one-link)
+
+> quote
+
+    @_@
+
+more text
+
+    @_@
+
+* one item
+
+* [no-text](no-text)
+* [with text](with-text)
+
+* an item
+* another item
+"#;
+
+    assert_eq!(expected, &kitchen_sink().unwrap().to_markup::<Markdown>());
 }

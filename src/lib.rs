@@ -1,3 +1,9 @@
+//! Build documents with Gemtext syntax, with markup output
+//!
+//! # Features
+//! - `html`
+//! - `markdown`
+
 mod builder;
 pub use builder::Document;
 
@@ -16,8 +22,15 @@ pub use preformatted::Preformatted;
 mod gemtext;
 pub use gemtext::Gemtext;
 
+#[cfg(feature = "html")]
 mod html;
+#[cfg(feature = "html")]
 pub use html::Html;
+
+#[cfg(feature = "markdown")]
+mod markdown;
+#[cfg(feature = "markdown")]
+pub use markdown::Markdown;
 
 /// Gemtext elements
 #[derive(Debug, Clone)]

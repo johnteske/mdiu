@@ -3,5 +3,11 @@ name = "mu-lines"
 version = "0.0.0"
 edition = "2021"
 
+[features]
+#default = []
+#parsing = []
+html = []
+markdown = []
+
 [dependencies]
 http = "0.2.6"
