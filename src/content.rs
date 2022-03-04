@@ -1,9 +1,11 @@
 use crate::Error;
 use std::fmt;
 
-/// A piece of text without newline characters
+/// Text content without newline characters
 ///
-/// As newline characters delineate [`Block`]s in gemtext, content should be free of them.
+/// Newline characters delineate [`Block`]s in gemtext. With the exception of
+/// [`Block::Preformatted`], the contents of a [`Block`] should be free of newline
+/// characters to guarantee the expected output.
 ///
 /// [`Content`] should primarily be created through a conversion that checks for
 /// `\n` and `\r` characters:
@@ -17,10 +19,11 @@ use std::fmt;
 /// # }
 /// ```
 ///
-/// If the text is known to be free of newline characters, [`Content`] can be created without
-/// checking using [`new_unchecked`].
+/// If the text is known to be free of newline characters, [`Content`] can be
+/// created without checking using [`new_unchecked`].
 ///
 /// [`Block`]: crate::Block
+/// [`Block::Preformatted`]: crate::Block::Preformatted
 /// [`new_unchecked`]: #method.new_unchecked
 #[derive(Debug, Clone)]
 pub struct Content(String);

@@ -1,6 +1,6 @@
 use super::{Block, Level, Markup};
 
-/// A unit representing gemtext markup
+/// Gemtext formatter
 pub struct Gemtext;
 
 impl Markup for Gemtext {

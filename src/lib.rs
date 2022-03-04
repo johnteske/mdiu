@@ -1,8 +1,10 @@
-//! Build documents with Gemtext syntax, with markup output
+//! Build documents with [gemtext]
 //!
 //! # Features
 //! - `html`
 //! - `markdown`
+//!
+//! [gemtext]: https://gemini.circumlunar.space/docs/gemtext.gmi
 
 mod builder;
 pub use builder::Document;
@@ -32,7 +34,7 @@ mod markdown;
 #[cfg(feature = "markdown")]
 pub use markdown::Markdown;
 
-/// Gemtext elements
+/// A Gemtext element
 #[derive(Debug, Clone)]
 pub enum Block {
     Text(Content),
@@ -58,7 +60,7 @@ pub trait Markup {
 }
 
 // TODO create_markup?
-/// Format [`Block`]s as markup `F`
+/// Creates a [`Markup`]-formatted [`String`]
 ///
 /// ```
 /// use mu_lines::{Document, Gemtext, markup};
@@ -66,6 +68,8 @@ pub trait Markup {
 /// let gemtext = markup::<Gemtext>(&doc);
 /// # assert_eq!("\n".to_string(), gemtext);
 /// ```
+///
+/// [`ToMarkup`] is the trait equivalent of this function.
 pub fn markup<F>(blocks: &[Block]) -> String
 where
     F: Markup,
@@ -73,21 +77,24 @@ where
     <F>::markup(blocks.iter())
 }
 
-/// Format as markup `F`
+/// Create [`Markup`]-formatted strings
 ///
-/// This trait is sealed and cannot be implemented outside of mu_lines
-pub trait ToMarkup: private::Sealed {
-    fn to_markup<F>(self) -> String
-    where
-        F: Markup;
-}
-
+/// *Note: this trait is sealed and cannot be implemented outside of mu_lines.*
+///
+/// [`markup`] is the function equivalent of this trait.
+///
 /// ```
 /// use mu_lines::{Block, Gemtext, ToMarkup};
 /// let slice = &[Block::Empty];
 /// let gemtext = slice.to_markup::<Gemtext>();
 /// # assert_eq!("\n".to_string(), gemtext);
 /// ```
+pub trait ToMarkup: private::Sealed {
+    fn to_markup<F>(self) -> String
+    where
+        F: Markup;
+}
+
 impl<'a, T> ToMarkup for T
 where
     T: IntoIterator<Item = &'a Block>,

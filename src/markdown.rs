@@ -1,8 +1,8 @@
 use super::{Block, Level, Markup};
 
-/// A unit representing Markdown
+/// Markdown formatter
 ///
-/// The original markdown flavor
+/// Supports [Markdown 1.0.1](https://daringfireball.net/projects/markdown/)
 pub struct Markdown;
 
 impl Markup for Markdown {

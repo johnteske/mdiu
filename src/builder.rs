@@ -3,13 +3,14 @@ use http::uri::Uri;
 
 /// A builder to create a document with [`Block`]s
 ///
-/// TODO..that tries to convert input into [`Content`]
+/// Where [`Content`] is expected, setters use `TryInto<Content>` for convenience.
 ///
 /// ```
 /// # use std::error::Error;
 /// # fn main() -> Result<(), Box<dyn Error>> {
-/// # use mu_lines::{Document, Block};
-/// let builder = Document::new().h1("my site")?;
+/// # use mu_lines::{Document, Content, Block};
+/// let text: Content = "some text".try_into()?;
+/// let builder = Document::new().h1("my site")?.text(text)?;
 /// let v: Vec<Block> = builder.build();
 /// # Ok(())
 /// # }
