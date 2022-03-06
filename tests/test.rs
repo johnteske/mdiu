@@ -3,22 +3,22 @@ use mu_lines::*;
 
 fn kitchen_sink() -> Result<Vec<Block>, Error> {
     let lines = Document::new()
-        .h1("title")?
-        .h2("section")?
-        .h3("subsection")?
+        .h1("title")
+        .h2("section")
+        .h3("subsection")
         .empty()
-        .text("text")?
-        .link_with_label(Uri::from_static("one-link"), "one link")?
-        .quote("quote")?
+        .text("text")
+        .link_with_label(Uri::from_static("one-link"), "one link")
+        .quote("quote")
         .preformatted("@_@".to_string())
-        .text("more text")?
-        .preformatted_with_alt("@_@".into(), "emoticon")?
-        .list_item("one item")?
+        .text("more text")
+        .preformatted_with_alt("@_@".into(), "emoticon")
+        .list_item("one item")
         .link(Uri::from_static("no-text"))
-        .link_with_label(Uri::from_static("with-text"), "with text")?
-        .list_item("an item")?
-        .list_item("another item")?
-        .build();
+        .link_with_label(Uri::from_static("with-text"), "with text")
+        .list_item("an item")
+        .list_item("another item")
+        .build()?;
 
     Ok(lines)
 }

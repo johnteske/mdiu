@@ -42,13 +42,18 @@ impl Content {
     pub fn new_unchecked<T: Into<String>>(value: T) -> Self {
         Content(value.into())
     }
+
+    pub fn validate(&self) -> Result<&str, Error> {
+        validate(&self.0)
+    }
 }
 
 impl TryFrom<String> for Content {
     type Error = Error;
 
     fn try_from(value: String) -> Result<Self, Self::Error> {
-        validate_text(&value).map(|_| Content(value))
+        let _ = validate(&value)?;
+        Ok(Content(value))
     }
 }
 
@@ -56,7 +61,13 @@ impl TryFrom<&str> for Content {
     type Error = Error;
 
     fn try_from(value: &str) -> Result<Self, Self::Error> {
-        validate_text(value).map(|_| Content(value.to_string()))
+        validate(value).map(|value| Content(value.to_string()))
+    }
+}
+
+impl From<Content> for String {
+    fn from(value: Content) -> String {
+        value.0
     }
 }
 
@@ -66,10 +77,10 @@ impl fmt::Display for Content {
     }
 }
 
-fn validate_text(text: &str) -> Result<(), Error> {
+fn validate(text: &str) -> Result<&str, Error> {
     if text.contains(&['\n', '\r']) {
         Err(Error::InvalidContent)
     } else {
-        Ok(())
+        Ok(text)
     }
 }

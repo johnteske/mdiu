@@ -6,11 +6,11 @@
 //!
 //! [gemtext]: https://gemini.circumlunar.space/docs/gemtext.gmi
 
-mod builder;
-pub use builder::Document;
-
 mod content;
 pub use content::Content;
+
+mod document;
+pub use document::Document;
 
 mod error;
 pub use error::Error;
@@ -63,10 +63,14 @@ pub trait Markup {
 /// Creates a [`Markup`]-formatted [`String`]
 ///
 /// ```
+/// # use std::error::Error;
+/// # fn main() -> Result<(), Box<dyn Error>> {
 /// use mu_lines::{Document, Gemtext, markup};
-/// let doc = Document::new().empty().build();
+/// let doc = Document::new().empty().build()?;
 /// let gemtext = markup::<Gemtext>(&doc);
 /// # assert_eq!("\n".to_string(), gemtext);
+/// # Ok(())
+/// # }
 /// ```
 ///
 /// [`ToMarkup`] is the trait equivalent of this function.
@@ -84,10 +88,15 @@ where
 /// [`markup`] is the function equivalent of this trait.
 ///
 /// ```
+/// # use std::error::Error;
+/// # fn main() -> Result<(), Box<dyn Error>> {
 /// use mu_lines::{Block, Gemtext, ToMarkup};
 /// let slice = &[Block::Empty];
 /// let gemtext = slice.to_markup::<Gemtext>();
 /// # assert_eq!("\n".to_string(), gemtext);
+/// # Ok(())
+/// # }
+///
 /// ```
 pub trait ToMarkup: private::Sealed {
     fn to_markup<F>(self) -> String
