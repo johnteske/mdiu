@@ -1,11 +1,12 @@
 [package]
-name = "mu-lines"
-version = "0.0.0"
+name = "mdiu"
+version = "0.1.0"
 edition = "2021"
 
+[package.metadata.docs.rs]
+all-features = true
+
 [features]
-#default = []
-#parsing = []
 html = []
 markdown = []
 

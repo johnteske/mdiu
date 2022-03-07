@@ -12,9 +12,8 @@ impl Link {
     /// Constructs a new [`Link`]
     ///
     /// ```
-    /// # use std::error::Error;
-    /// # fn main() -> Result<(), Box<dyn Error>> {
-    /// # use mu_lines::Link;
+    /// # use mdiu::*;
+    /// # fn main() -> Result<()> {
     /// use http::uri::Uri;
     /// let link = Link::new(Uri::from_static("index.gmi"), Some("my gemlog".try_into()?));
     /// # Ok(())
@@ -44,7 +43,7 @@ impl Link {
 }
 
 /// ```
-/// # use mu_lines::Link;
+/// # use mdiu::*;
 /// use http::uri::Uri;
 /// let uri = Uri::from_static("index.gmi");
 /// let link = Link::from(uri);

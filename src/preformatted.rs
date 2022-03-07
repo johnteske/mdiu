@@ -11,9 +11,8 @@ impl Preformatted {
     /// Constructs a new `Preformatted`
     ///
     /// ```
-    /// # use std::error::Error;
-    /// # fn main() -> Result<(), Box<dyn Error>> {
-    /// # use mu_lines::Preformatted;
+    /// # use mdiu::*;
+    /// # fn main() -> Result<()> {
     /// let pre = Preformatted::new("@_@".to_string(), Some("emoticon".try_into()?));
     /// # Ok(())
     /// # }

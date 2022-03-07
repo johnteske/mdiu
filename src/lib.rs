@@ -1,10 +1,13 @@
 //! Build documents with [gemtext]
 //!
+//! Named after the [Manual Data Insertion Unit], part of Gemini's on-board computer.
+//!
 //! # Features
 //! - `html`
 //! - `markdown`
 //!
 //! [gemtext]: https://gemini.circumlunar.space/docs/gemtext.gmi
+//! [Manual Data Insertion Unit]: https://web.archive.org/web/20220201083102/https://www.ibiblio.org/apollo/Gemini.html
 
 mod content;
 pub use content::Content;
@@ -13,7 +16,7 @@ mod document;
 pub use document::Document;
 
 mod error;
-pub use error::Error;
+pub use error::{Error, Result};
 
 mod link;
 pub use link::Link;
@@ -35,7 +38,7 @@ mod markdown;
 pub use markdown::Markdown;
 
 /// A Gemtext element
-#[derive(Debug, Clone)]
+#[derive(Clone, Debug)]
 pub enum Block {
     Text(Content),
     Link(Link),
@@ -47,7 +50,7 @@ pub enum Block {
 }
 
 /// Heading level of [`Block::Heading`]
-#[derive(Debug, Clone)]
+#[derive(Clone, Debug)]
 pub enum Level {
     One,
     Two,
@@ -63,9 +66,8 @@ pub trait Markup {
 /// Creates a [`Markup`]-formatted [`String`]
 ///
 /// ```
-/// # use std::error::Error;
-/// # fn main() -> Result<(), Box<dyn Error>> {
-/// use mu_lines::{Document, Gemtext, markup};
+/// # fn main() -> mdiu::Result<()> {
+/// use mdiu::{Document, Gemtext, markup};
 /// let doc = Document::new().empty().build()?;
 /// let gemtext = markup::<Gemtext>(&doc);
 /// # assert_eq!("\n".to_string(), gemtext);
@@ -83,14 +85,13 @@ where
 
 /// Create [`Markup`]-formatted strings
 ///
-/// *Note: this trait is sealed and cannot be implemented outside of mu_lines.*
+/// *Note: this trait is sealed and cannot be implemented outside of mdiu.*
 ///
 /// [`markup`] is the function equivalent of this trait.
 ///
 /// ```
-/// # use std::error::Error;
-/// # fn main() -> Result<(), Box<dyn Error>> {
-/// use mu_lines::{Block, Gemtext, ToMarkup};
+/// # fn main() -> mdiu::Result<()> {
+/// use mdiu::{Block, Gemtext, ToMarkup};
 /// let slice = &[Block::Empty];
 /// let gemtext = slice.to_markup::<Gemtext>();
 /// # assert_eq!("\n".to_string(), gemtext);

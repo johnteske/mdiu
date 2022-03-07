@@ -11,9 +11,8 @@ use std::fmt;
 /// `\n` and `\r` characters:
 ///
 /// ```
-/// # use std::error::Error;
-/// # fn main() -> Result<(), Box<dyn Error>> {
-/// # use mu_lines::Content;
+/// # use mdiu::*;
+/// # fn main() -> Result<()> {
 /// let content: Content = "some text".try_into()?;
 /// # Ok(())
 /// # }
@@ -35,7 +34,7 @@ impl Content {
     /// especially in the case of formatting as [`Gemtext`].
     ///
     /// ```
-    /// # use mu_lines::Content;
+    /// # use mdiu::Content;
     /// let content = Content::new_unchecked("smth");
     /// ```
     /// [`Gemtext`]: crate::Gemtext
@@ -43,7 +42,7 @@ impl Content {
         Content(value.into())
     }
 
-    pub fn validate(&self) -> Result<&str, Error> {
+    pub fn validate(&self) -> crate::Result<&str> {
         validate(&self.0)
     }
 }
@@ -77,7 +76,7 @@ impl fmt::Display for Content {
     }
 }
 
-fn validate(text: &str) -> Result<&str, Error> {
+fn validate(text: &str) -> crate::Result<&str> {
     if text.contains(&['\n', '\r']) {
         Err(Error::InvalidContent)
     } else {

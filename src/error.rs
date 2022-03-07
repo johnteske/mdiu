@@ -1,11 +1,13 @@
 use std::error;
 use std::fmt;
 
-/// The error type for gemtext creation and parsing
+/// Error type that can be returned during gemtext creation
 #[derive(Debug)]
 pub enum Error {
     InvalidContent,
 }
+
+impl error::Error for Error {}
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -18,4 +20,4 @@ impl fmt::Display for Error {
     }
 }
 
-impl error::Error for Error {}
+pub type Result<T> = std::result::Result<T, Error>;

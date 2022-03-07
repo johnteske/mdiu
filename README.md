@@ -1,7 +1,12 @@
-# mu-lines
-markup lines, or "mu" as in micro
+# mdiu
 
-This library is for building simple markup
-and output
-gemtext support is at its core
-parsing is not supported
+Build documents with [gemtext]
+
+Named after the [Manual Data Insertion Unit], part of Gemini's on-board computer.
+
+# Features
+- `html`
+- `markdown`
+
+[gemtext]: https://gemini.circumlunar.space/docs/gemtext.gmi
+[Manual Data Insertion Unit]: https://web.archive.org/web/20220201083102/https://www.ibiblio.org/apollo/Gemini.html

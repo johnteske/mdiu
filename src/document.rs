@@ -1,4 +1,4 @@
-use crate::{Block, Content, Error, Level, Link, Preformatted};
+use crate::{Block, Content, Level, Link, Preformatted, Result};
 use http::uri::Uri;
 
 /// A builder to create a document with [`Block`]s
@@ -6,9 +6,8 @@ use http::uri::Uri;
 /// Where [`Content`] is expected, setters use `TryInto<Content>` for convenience.
 ///
 /// ```
-/// # use std::error::Error;
-/// # fn main() -> Result<(), Box<dyn Error>> {
-/// # use mu_lines::{Document, Content, Block};
+/// # use mdiu::*;
+/// # fn main() -> Result<()> {
 /// let text: Content = "some text".try_into()?;
 /// let builder = Document::new().h1("my site").text(text);
 /// let v: Vec<Block> = builder.build()?;
@@ -130,7 +129,7 @@ impl Document {
         }
     }
 
-    pub fn validate(&self) -> Result<(), Error> {
+    pub fn validate(&self) -> Result<()> {
         self.0.iter().try_for_each(|block| {
             let _ = match block {
                 Block::Text(content) => content.validate(),
@@ -149,8 +148,8 @@ impl Document {
     ///
     /// ```
     /// # use std::error::Error;
-    /// # fn main() -> Result<(), Box<dyn Error>> {
-    /// # use mu_lines::{Document, Gemtext, ToMarkup};
+    /// # use mdiu::*;
+    /// # fn main() -> Result<()> {
     /// let mut builder = Document::new();
     /// builder = builder.h1("my site");
     /// // Explicitly clone the builder to reuse
@@ -161,7 +160,7 @@ impl Document {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn build(self) -> Result<Vec<Block>, Error> {
+    pub fn build(self) -> Result<Vec<Block>> {
         self.validate()?;
         Ok(self.0)
     }
