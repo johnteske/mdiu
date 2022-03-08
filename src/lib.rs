@@ -59,6 +59,8 @@ pub enum Level {
 
 /// Format an iterator of [`Block`]s
 pub trait Markup {
+    // This takes an iter of Blocks so the formatter can handle adjacent Blocks,
+    // for example wrapping lists with <ul> in HTML
     fn markup<'a, I: Iterator<Item = &'a Block>>(iter: I) -> String;
 }
 
