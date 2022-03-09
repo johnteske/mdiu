@@ -21,6 +21,8 @@ pub use error::{Error, Result};
 mod link;
 pub use link::Link;
 
+mod list_state;
+
 mod preformatted;
 pub use preformatted::Preformatted;
 

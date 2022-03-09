@@ -1,4 +1,6 @@
 use super::{Block, Level, Markup};
+use crate::list_state::{update_list_state, ListState};
+use std::fmt::Write;
 
 /// Markdown formatter
 ///
@@ -8,90 +10,75 @@ pub struct Markdown;
 impl Markup for Markdown {
     fn markup<'a, I: Iterator<Item = &'a Block>>(iter: I) -> String {
         let mut iter = iter.peekable();
-        let mut s = String::new();
 
-        let mut state = State::Normal;
+        let mut b = String::new();
+        let mut state = ListState::NotInList;
 
         while let Some(block) = iter.next() {
-            let l = match block {
-                Block::Text(text) => format!("{}\n\n", text),
-                Block::Link(link) => {
-                    let next_block_is_link = matches!(iter.peek(), Some(Block::Link(_)));
-                    wrap_list_item(&mut state, next_block_is_link, |prefix| {
-                        match link.label() {
-                            Some(label) => {
-                                format!("{}[{}]({})\n", prefix, label, link.uri())
-                            }
-                            None => {
-                                // Markdown 1.0.1 autolink syntax doesn't work for relative URIs
-                                // https://daringfireball.net/projects/markdown/syntax#autolink
-                                format!("{}[{1}]({1})\n", prefix, link.uri())
-                            }
-                        }
-                    })
-                }
-                Block::Heading(Level::One, text) => format!("# {}\n\n", text),
-                Block::Heading(Level::Two, text) => format!("## {}\n\n", text),
-                Block::Heading(Level::Three, text) => format!("### {}\n\n", text),
-                Block::ListItem(text) => {
-                    let next_block_is_item = matches!(iter.peek(), Some(Block::ListItem(_)));
-                    wrap_list_item(&mut state, next_block_is_item, |_| format!("* {}\n", text))
-                }
-                Block::Quote(text) => format!("> {}\n\n", text),
-                Block::Preformatted(pre) => {
-                    let lines: String = pre
-                        .text()
-                        .lines()
-                        .map(|line| format!("    {}", line))
-                        .collect();
-                    format!("{}\n\n", lines)
-                }
-                Block::Empty => "".to_string(),
-            };
-
-            s += &l;
+            write_block(&mut b, &mut state, block, iter.peek()).expect("TODO")
         }
 
         // Remove trailing newline
-        s.pop();
+        b.pop();
 
-        s
+        b
     }
 }
 
-enum State {
-    InList,
-    Normal,
-}
+fn write_block(
+    b: &mut String,
+    state: &mut ListState,
+    block: &Block,
+    next_block: Option<&&Block>,
+) -> Result<(), std::fmt::Error> {
+    match block {
+        Block::Text(text) => write!(b, "{}\n\n", text),
+        Block::Link(link) => {
+            let next_block_is_link = matches!(next_block, Some(Block::Link(_)));
+            update_list_state(state, next_block_is_link);
 
-fn wrap_list_item(
-    state: &mut State,
-    next_block_is_same: bool,
-    format_item: impl Fn(&str) -> String,
-) -> String {
-    let mut b = String::new();
+            let prefix = match &state {
+                ListState::NotInList => "",
+                _ => "* ",
+            };
 
-    if matches!(state, State::Normal) && next_block_is_same {
-        *state = State::InList;
-    }
+            match link.label() {
+                Some(label) => {
+                    writeln!(b, "{}[{}]({})", prefix, label, link.uri())?;
+                }
+                None => {
+                    // Markdown 1.0.1 autolink syntax doesn't work for relative URIs
+                    // https://daringfireball.net/projects/markdown/syntax#autolink
+                    writeln!(b, "{}[{1}]({1})", prefix, link.uri())?;
+                }
+            }
 
-    let prefix = if matches!(state, State::InList) {
-        "* "
-    } else {
-        ""
-    };
-
-    // TODO one usage of this always ignores the input
-    b += &format_item(prefix);
-
-    match (&state, next_block_is_same) {
-        (State::InList, false) => {
-            *state = State::Normal;
-            b += "\n"
+            list_trailing_newline(b, state)
         }
-        (State::Normal, _) => b += "\n",
-        _ => {}
+        Block::Heading(Level::One, text) => write!(b, "# {}\n\n", text),
+        Block::Heading(Level::Two, text) => write!(b, "## {}\n\n", text),
+        Block::Heading(Level::Three, text) => write!(b, "### {}\n\n", text),
+        Block::ListItem(text) => {
+            let next_block_is_item = matches!(next_block, Some(Block::ListItem(_)));
+            update_list_state(state, next_block_is_item);
+            writeln!(b, "* {}", text)?;
+            list_trailing_newline(b, state)
+        }
+        Block::Quote(text) => write!(b, "> {}\n\n", text),
+        Block::Preformatted(pre) => {
+            for line in pre.text().lines() {
+                write!(b, "    {}", line)?;
+            }
+            write!(b, "\n\n")
+        }
+        Block::Empty => Ok(()),
     }
+}
 
-    b
+// After a list or single list item/link, add a newline
+fn list_trailing_newline(b: &mut String, state: &ListState) -> Result<(), std::fmt::Error> {
+    match &state {
+        ListState::NotInList | ListState::Exiting => writeln!(b),
+        _ => Ok(()),
+    }
 }
