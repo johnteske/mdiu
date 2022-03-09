@@ -42,16 +42,14 @@ fn write_block(
                 _ => "* ",
             };
 
-            match link.label() {
-                Some(label) => {
-                    writeln!(b, "{}[{}]({})", prefix, label, link.uri())?;
-                }
-                None => {
-                    // Markdown 1.0.1 autolink syntax doesn't work for relative URIs
-                    // https://daringfireball.net/projects/markdown/syntax#autolink
-                    writeln!(b, "{}[{1}]({1})", prefix, link.uri())?;
-                }
-            }
+            // Markdown 1.0.1 autolink syntax doesn't work for relative URIs
+            // https://daringfireball.net/projects/markdown/syntax#autolink
+            let uri = link.uri();
+            let label = match link.label() {
+                Some(link) => link.to_string(),
+                None => uri.to_string(),
+            };
+            writeln!(b, "{}[{}]({})", prefix, label, link.uri())?;
 
             list_trailing_newline(b, state)
         }
