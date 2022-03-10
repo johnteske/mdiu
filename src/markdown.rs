@@ -34,7 +34,7 @@ fn write_block(
     next_block: Option<&&Block>,
 ) -> Result<(), std::fmt::Error> {
     match block {
-        Block::Text(text) => write!(b, "{}\n\n", text),
+        Block::Text(text) => write!(b, "{text}\n\n"),
         Block::Link(link) => {
             let next_block_is_link = matches!(next_block, Some(Block::Link(_)));
             update_list_state(state, next_block_is_link);
@@ -51,23 +51,23 @@ fn write_block(
                 Some(link) => link.to_string(),
                 None => uri.to_string(),
             };
-            writeln!(b, "{}[{}]({})", prefix, label, link.uri())?;
+            writeln!(b, "{prefix}[{label}]({uri})")?;
 
             list_trailing_newline(b, state)
         }
-        Block::Heading(Level::One, text) => write!(b, "# {}\n\n", text),
-        Block::Heading(Level::Two, text) => write!(b, "## {}\n\n", text),
-        Block::Heading(Level::Three, text) => write!(b, "### {}\n\n", text),
+        Block::Heading(Level::One, text) => write!(b, "# {text}\n\n"),
+        Block::Heading(Level::Two, text) => write!(b, "## {text}\n\n"),
+        Block::Heading(Level::Three, text) => write!(b, "### {text}\n\n"),
         Block::ListItem(text) => {
             let next_block_is_item = matches!(next_block, Some(Block::ListItem(_)));
             update_list_state(state, next_block_is_item);
-            writeln!(b, "* {}", text)?;
+            writeln!(b, "* {text}")?;
             list_trailing_newline(b, state)
         }
-        Block::Quote(text) => write!(b, "> {}\n\n", text),
+        Block::Quote(text) => write!(b, "> {text}\n\n"),
         Block::Preformatted(pre) => {
             for line in pre.text().lines() {
-                write!(b, "    {}", line)?;
+                write!(b, "    {line}")?;
             }
             write!(b, "\n\n")
         }

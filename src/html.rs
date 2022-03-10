@@ -29,7 +29,7 @@ fn write_block(
     next_block: Option<&&Block>,
 ) -> Result<(), std::fmt::Error> {
     match block {
-        Block::Text(text) => writeln!(b, "<p>{}</p>", text),
+        Block::Text(text) => writeln!(b, "<p>{text}</p>"),
         Block::Link(link) => {
             let next_block_is_link = matches!(next_block, Some(Block::Link(_)));
             update_list_state(state, next_block_is_link);
@@ -38,13 +38,13 @@ fn write_block(
                 writeln!(b, "<ul>")?;
             }
 
-            let wrapper = list_item_wrapper(state);
+            let tag = list_item_wrapper(state);
             let uri = link.uri();
             let label = link
                 .label()
                 .as_ref()
                 .map_or(uri.to_string(), |l| l.to_string());
-            writeln!(b, "<{0}><a href=\"{1}\">{2}</a></{0}>", wrapper, uri, label)?;
+            writeln!(b, "<{tag}><a href=\"{uri}\">{label}</a></{tag}>")?;
 
             if matches!(state, ListState::Exiting) {
                 writeln!(b, "</ul>")?;
@@ -52,9 +52,9 @@ fn write_block(
 
             Ok(())
         }
-        Block::Heading(Level::One, text) => writeln!(b, "<h1>{}</h1>", text),
-        Block::Heading(Level::Two, text) => writeln!(b, "<h2>{}</h2>", text),
-        Block::Heading(Level::Three, text) => writeln!(b, "<h3>{}</h3>", text),
+        Block::Heading(Level::One, text) => writeln!(b, "<h1>{text}</h1>"),
+        Block::Heading(Level::Two, text) => writeln!(b, "<h2>{text}</h2>"),
+        Block::Heading(Level::Three, text) => writeln!(b, "<h3>{text}</h3>"),
         Block::ListItem(text) => {
             let next_block_is_item = matches!(next_block, Some(Block::ListItem(_)));
             update_list_state(state, next_block_is_item);
@@ -72,8 +72,8 @@ fn write_block(
 
             Ok(())
         }
-        Block::Quote(text) => writeln!(b, "<blockquote>{}</blockquote>", text),
-        Block::Preformatted(pre) => writeln!(b, "<pre>\n{}\n</pre>", pre.text()),
+        Block::Quote(text) => writeln!(b, "<blockquote>{text}</blockquote>"),
+        Block::Preformatted(pre) => writeln!(b, "<pre>\n{text}\n</pre>", text = pre.text()),
         Block::Empty => Ok(()),
     }
 }
