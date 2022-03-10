@@ -15,7 +15,9 @@ impl Markup for Markdown {
         let mut state = ListState::NotInList;
 
         while let Some(block) = iter.next() {
-            write_block(&mut b, &mut state, block, iter.peek()).expect("TODO")
+            write_block(&mut b, &mut state, block, iter.peek())
+                //https://doc.rust-lang.org/std/macro.format.html#panics
+                .expect("BUG: fmt::Write for String does not return an error");
         }
 
         // Remove trailing newline
