@@ -130,3 +130,6 @@ mod private {
 
     impl<'a, T> Sealed for T where T: IntoIterator<Item = &'a Block> {}
 }
+
+//https://doc.rust-lang.org/std/macro.format.html#panics
+pub(crate) const FMT_STRING_ERR: &str = "BUG: fmt::Write for String does not return an error";

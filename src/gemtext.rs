@@ -26,7 +26,7 @@ impl Markup for Gemtext {
                 },
                 Block::Empty => writeln!(b),
             }
-            .expect("asd");
+            .expect(crate::FMT_STRING_ERR);
         }
 
         b
