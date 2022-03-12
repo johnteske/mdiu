@@ -28,7 +28,7 @@ macro_rules! setter {
             self
         }
     };
-    ($(#[doc = $doc:expr])* pub fn $func:ident($($param:ident: $ty:ty),*)? $block:block) => {
+    ($(#[doc = $doc:expr])* pub fn $func:ident<T>($($param:ident: $ty:ty),*) $block:block) => {
         $(#[doc = $doc])*
         pub fn $func<T>(
             mut self,
@@ -53,7 +53,7 @@ impl Document {
 
     setter! {
         /// Appends text, returns an error if text contains newlines
-        pub fn text(text: T)? {
+        pub fn text<T>(text: T) {
             let content = Content::new_unchecked(text);
             Block::Text(content)
         }
@@ -67,42 +67,42 @@ impl Document {
     }
     setter! {
         /// Appends a link with label
-        pub fn link_with_label(uri: Uri, label: T)? {
+        pub fn link_with_label<T>(uri: Uri, label: T) {
             let label = Content::new_unchecked(label);
             Block::Link(Link::new(uri, Some(label)))
         }
     }
 
     setter! {
-        pub fn h1(text: T)? {
+        pub fn h1<T>(text: T) {
             let content = Content::new_unchecked(text);
             Block::Heading(Level::One, content)
         }
     }
 
     setter! {
-        pub fn h2(text: T)? {
+        pub fn h2<T>(text: T) {
             let content = Content::new_unchecked(text);
             Block::Heading(Level::Two, content)
         }
     }
 
     setter! {
-        pub fn h3(text: T)? {
+        pub fn h3<T>(text: T) {
             let content = Content::new_unchecked(text);
             Block::Heading(Level::Three, content)
         }
     }
 
     setter! {
-        pub fn list_item(text: T)? {
+        pub fn list_item<T>(text: T) {
             let content = Content::new_unchecked(text);
             Block::ListItem(content)
         }
     }
 
     setter! {
-        pub fn quote(text: T)? {
+        pub fn quote<T>(text: T) {
             let content = Content::new_unchecked(text);
             Block::Quote(content)
         }
@@ -116,7 +116,7 @@ impl Document {
     }
     setter! {
         /// Appends preformatted text with alt text
-        pub fn preformatted_with_alt(text: String, alt: T)? {
+        pub fn preformatted_with_alt<T>(text: String, alt: T) {
             let alt = Content::new_unchecked(alt);
             Block::Preformatted(Preformatted::new(text, Some(alt)))
         }
