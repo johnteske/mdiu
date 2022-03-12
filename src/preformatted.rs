@@ -17,8 +17,11 @@ impl Preformatted {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn new(text: String, alt: Option<Content>) -> Self {
-        Preformatted { text, alt }
+    pub fn new<T: Into<String>>(text: T, alt: Option<Content>) -> Self {
+        Preformatted {
+            text: text.into(),
+            alt,
+        }
     }
 
     /// Returns a reference to the text

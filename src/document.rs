@@ -24,7 +24,7 @@ macro_rules! setter {
             mut self,
             $($param: $ty),*
         ) -> Self {
-            self.push($block);
+            self.0.push($block);
             self
         }
     };
@@ -34,8 +34,8 @@ macro_rules! setter {
             mut self,
             $($param: $ty),*
         ) -> Self
-        where T: TryInto<Content> + Into<String> {
-            self.push($block);
+        where T: Into<String> {
+            self.0.push($block);
             self
         }
     };
@@ -44,11 +44,6 @@ macro_rules! setter {
 impl Document {
     pub fn new() -> Self {
         Self::default()
-    }
-
-    fn push(&mut self, block: Block) -> &mut Self {
-        self.0.push(block);
-        self
     }
 
     setter! {
@@ -110,13 +105,13 @@ impl Document {
 
     setter! {
         /// Appends preformatted text
-        pub fn preformatted(text: String) {
+        pub fn preformatted<T>(text: T) {
             Block::Preformatted(Preformatted::new(text, None))
         }
     }
     setter! {
         /// Appends preformatted text with alt text
-        pub fn preformatted_with_alt<T>(text: String, alt: T) {
+        pub fn preformatted_with_alt<T>(text: T, alt: T) {
             let alt = Content::new_unchecked(alt);
             Block::Preformatted(Preformatted::new(text, Some(alt)))
         }
