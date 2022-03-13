@@ -18,22 +18,22 @@ use http::uri::Uri;
 pub struct Document(Vec<Block>);
 
 macro_rules! setter {
-    ($(#[doc = $doc:expr])* pub fn $func:ident($($param:ident: $ty:ty),*) $block:block) => {
-        $(#[doc = $doc])*
-        pub fn $func(
-            mut self,
-            $($param: $ty),*
-        ) -> Self {
+    (
+        $(#[$attr:meta])*
+        pub fn $func:ident($($param:ident: $ty:ty),*) $block:block
+    ) => {
+        $(#[$attr])*
+        pub fn $func(mut self, $($param: $ty),*) -> Self {
             self.0.push($block);
             self
         }
     };
-    ($(#[doc = $doc:expr])* pub fn $func:ident<T>($($param:ident: $ty:ty),*) $block:block) => {
-        $(#[doc = $doc])*
-        pub fn $func<T>(
-            mut self,
-            $($param: $ty),*
-        ) -> Self
+    (
+        $(#[$attr:meta])*
+        pub fn $func:ident<T>($($param:ident: $ty:ty),*) $block:block
+    ) => {
+        $(#[$attr])*
+        pub fn $func<T>(mut self, $($param: $ty),*) -> Self
         where T: Into<String> {
             self.0.push($block);
             self
