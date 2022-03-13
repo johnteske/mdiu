@@ -76,7 +76,7 @@ fn html() {
 </ul>
 "#;
 
-    assert_eq!(expected, markup::<Html>(&kitchen_sink().unwrap()));
+    assert_eq!(expected, &kitchen_sink().unwrap().to_markup::<Html>());
 }
 
 #[cfg(feature = "markdown")]

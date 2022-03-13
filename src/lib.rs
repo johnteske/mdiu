@@ -64,32 +64,9 @@ pub trait Markup {
     fn markup<'a, I: Iterator<Item = &'a Block>>(iter: I) -> String;
 }
 
-// TODO create_markup?
-/// Creates a [`Markup`]-formatted [`String`]
-///
-/// ```
-/// # fn main() -> mdiu::Result<()> {
-/// use mdiu::{Document, Gemtext, markup};
-/// let doc = Document::new().empty().build()?;
-/// let gemtext = markup::<Gemtext>(&doc);
-/// # assert_eq!("\n".to_string(), gemtext);
-/// # Ok(())
-/// # }
-/// ```
-///
-/// [`ToMarkup`] is the trait equivalent of this function.
-pub fn markup<F>(blocks: &[Block]) -> String
-where
-    F: Markup,
-{
-    <F>::markup(blocks.iter())
-}
-
 /// Create [`Markup`]-formatted strings
 ///
-/// *Note: this trait is sealed and cannot be implemented outside of mdiu.*
-///
-/// [`markup`] is the function equivalent of this trait.
+/// *Note: this trait is sealed and cannot be implemented outside of this library.*
 ///
 /// ```
 /// # fn main() -> mdiu::Result<()> {
@@ -99,7 +76,6 @@ where
 /// # assert_eq!("\n".to_string(), gemtext);
 /// # Ok(())
 /// # }
-///
 /// ```
 pub trait ToMarkup: private::Sealed {
     fn to_markup<F>(self) -> String
