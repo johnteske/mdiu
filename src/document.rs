@@ -125,17 +125,14 @@ impl Document {
     }
 
     pub fn validate(&self) -> Result<()> {
-        self.0.iter().try_for_each(|block| {
-            let _ = match block {
-                Block::Text(content) => content.validate(),
-                Block::Link(link) => link.label().as_ref().map_or(Ok(""), |c| c.validate()),
-                Block::Heading(_, content) => content.validate(),
-                Block::ListItem(content) => content.validate(),
-                Block::Quote(content) => content.validate(),
-                Block::Preformatted(pre) => pre.alt().as_ref().map_or(Ok(""), |c| c.validate()),
-                _ => Ok(""),
-            };
-            Ok(())
+        self.0.iter().try_for_each(|block| match block {
+            Block::Text(content) => content.validate(),
+            Block::Link(link) => link.label().as_ref().map_or(Ok(()), |c| c.validate()),
+            Block::Heading(_, content) => content.validate(),
+            Block::ListItem(content) => content.validate(),
+            Block::Quote(content) => content.validate(),
+            Block::Preformatted(pre) => pre.alt().as_ref().map_or(Ok(()), |c| c.validate()),
+            _ => Ok(()),
         })
     }
 

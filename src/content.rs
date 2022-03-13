@@ -18,8 +18,8 @@ use std::fmt;
 /// # }
 /// ```
 ///
-/// If the text is known to be free of newline characters, [`Content`] can be
-/// created without checking using [`new_unchecked`].
+/// If you are sure that the text is free of newline characters,
+/// [`Content`] can be created without checking using [`new_unchecked`].
 ///
 /// [`Block`]: crate::Block
 /// [`Block::Preformatted`]: crate::Block::Preformatted
@@ -42,7 +42,7 @@ impl Content {
         Content(value.into())
     }
 
-    pub fn validate(&self) -> crate::Result<&str> {
+    pub fn validate(&self) -> crate::Result<()> {
         validate(&self.0)
     }
 }
@@ -60,7 +60,8 @@ impl TryFrom<&str> for Content {
     type Error = Error;
 
     fn try_from(value: &str) -> Result<Self, Self::Error> {
-        validate(value).map(|value| Content(value.to_string()))
+        let _ = validate(&value)?;
+        Ok(Content(value.to_string()))
     }
 }
 
@@ -76,10 +77,10 @@ impl fmt::Display for Content {
     }
 }
 
-fn validate(text: &str) -> crate::Result<&str> {
+fn validate(text: &str) -> crate::Result<()> {
     if text.contains(&['\n', '\r']) {
         Err(Error::InvalidContent)
     } else {
-        Ok(text)
+        Ok(())
     }
 }

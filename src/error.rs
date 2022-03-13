@@ -7,17 +7,16 @@ pub enum Error {
     InvalidContent,
 }
 
-impl error::Error for Error {}
-
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Error::InvalidContent => write!(
-                f,
-                "Conversion into Content failed: input contains newline characters"
-            ),
+            Error::InvalidContent => {
+                write!(f, "invalid Content: contains newline characters")
+            }
         }
     }
 }
+
+impl error::Error for Error {}
 
 pub type Result<T> = std::result::Result<T, Error>;
