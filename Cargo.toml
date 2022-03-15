@@ -1,8 +1,13 @@
 [package]
 name = "mdiu"
 version = "0.1.0"
+authors = ["John Teske <john@johnteske.net>"]
 edition = "2021"
+description = "Build documents with gemtext"
+repository = "https://github.com/johnteske/mdiu"
 license = "MIT OR Apache-2.0"
+keywords = ["gemini", "gemtext"]
+categories = ["template-engine"]
 
 [package.metadata.docs.rs]
 all-features = true
