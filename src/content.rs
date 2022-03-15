@@ -28,6 +28,9 @@ use std::fmt;
 pub struct Content(String);
 
 impl Content {
+    pub fn new<T: TryInto<Content>>(value: T) -> crate::Result<Self> {
+        value.try_into().map_err(|_| Error::InvalidContent)
+    }
     /// Constructs a new [`Content`] without checking the input
     ///
     /// This method is not unsafe but its correctness is not guaranteed,
@@ -60,7 +63,7 @@ impl TryFrom<&str> for Content {
     type Error = Error;
 
     fn try_from(value: &str) -> Result<Self, Self::Error> {
-        let _ = validate(&value)?;
+        let _ = validate(value)?;
         Ok(Content(value.to_string()))
     }
 }
@@ -68,6 +71,19 @@ impl TryFrom<&str> for Content {
 impl From<Content> for String {
     fn from(value: Content) -> String {
         value.0
+    }
+}
+
+/// ```
+/// # use mdiu::*;
+/// let content = Content::new("yes").unwrap();
+/// let mut b = String::new();
+/// b += content.as_ref();
+/// assert_eq!(b, "yes");
+/// ```
+impl AsRef<str> for Content {
+    fn as_ref(&self) -> &str {
+        &self.0
     }
 }
 
