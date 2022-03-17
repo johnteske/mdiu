@@ -1,6 +1,6 @@
 use super::{Block, Level, Markup};
 
-/// HTML formatter
+/// An HTML formatter, available with the `html` feature
 pub struct Html;
 
 impl Markup for Html {

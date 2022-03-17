@@ -37,6 +37,18 @@ impl Link {
         &self.label
     }
     /// Returns a mutable reference to the label
+    ///
+    /// # Example
+    /// ```
+    /// # fn main() -> mdiu::Result<()> {
+    /// use mdiu::Link;
+    /// use http::uri::Uri;
+    ///
+    /// let mut link = Link::new(Uri::from_static("/"), None);
+    /// *link.label_mut() = Some("home".try_into()?);
+    /// # Ok(())
+    /// # }
+    /// ```
     pub fn label_mut(&mut self) -> &mut Option<Content> {
         &mut self.label
     }

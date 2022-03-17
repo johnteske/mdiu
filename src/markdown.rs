@@ -1,8 +1,8 @@
 use super::{Block, Level, Markup};
 
-/// Markdown formatter
+/// A [Markdown 1.0.1] formatter, available with the `markdown` feature
 ///
-/// Supports [Markdown 1.0.1](https://daringfireball.net/projects/markdown/)
+/// [Markdown 1.0.1]: https://daringfireball.net/projects/markdown/
 pub struct Markdown;
 
 impl Markup for Markdown {
