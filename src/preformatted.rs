@@ -13,7 +13,7 @@ impl Preformatted {
     /// ```
     /// # use mdiu::*;
     /// # fn main() -> Result<()> {
-    /// let pre = Preformatted::new("@_@".to_string(), Some("emoticon".try_into()?));
+    /// let pre = Preformatted::new("@_@".to_string(), Some("emoticon".parse()?));
     /// # Ok(())
     /// # }
     /// ```

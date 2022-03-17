@@ -15,7 +15,7 @@ impl Link {
     /// # use mdiu::*;
     /// # fn main() -> Result<()> {
     /// use http::uri::Uri;
-    /// let link = Link::new(Uri::from_static("index.gmi"), Some("my gemlog".try_into()?));
+    /// let link = Link::new(Uri::from_static("index.gmi"), Some("my gemlog".parse()?));
     /// # Ok(())
     /// # }
     /// ```
@@ -45,7 +45,7 @@ impl Link {
     /// use http::uri::Uri;
     ///
     /// let mut link = Link::new(Uri::from_static("/"), None);
-    /// *link.label_mut() = Some("home".try_into()?);
+    /// *link.label_mut() = Some("home".parse()?);
     /// # Ok(())
     /// # }
     /// ```

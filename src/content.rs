@@ -9,19 +9,13 @@ use std::fmt;
 /// To be meaningful, `Content` should not be empty.
 ///
 /// # Example
-/// Constructs a document with checked `Content`
+///
 /// ```
 /// # fn main() -> mdiu::Result<()> {
-/// use mdiu::{Block, Content, Gemtext, Level, Markup};
+/// use mdiu::{Block, Content};
 ///
-/// let content = Content::new("my gemlog")?;
-/// let h1 = Block::Heading(Level::One, content);
-///
-/// // Content can also be created with try_into
-/// let text = Block::Text("welcome".try_into()?);
-///
-/// let blocks = vec![h1, text];
-/// let gemlog = <Gemtext>::markup(blocks.iter());
+/// let content: Content = "my gemlog".parse()?;
+/// let text = Block::Text(content);
 /// # Ok(())
 /// # }
 /// ```
@@ -45,8 +39,8 @@ impl Content {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn new<T: TryInto<Content>>(value: T) -> Result<Self, T::Error> {
-        value.try_into()
+    pub fn new<T: AsRef<str>>(value: T) -> Result<Self, Error> {
+        value.as_ref().parse()
     }
 
     /// Constructs a new, unchecked `Content`
@@ -94,44 +88,16 @@ impl Content {
     }
 }
 
-// Due to
-// https://github.com/rust-lang/rust/issues/50133#issuecomment-64690839
-// impl<T> TryFrom<T> for Content where T: Into<String>,
+use std::str::FromStr;
+impl FromStr for Content {
+    type Err = Error;
 
-impl TryFrom<String> for Content {
-    type Error = Error;
-
-    fn try_from(value: String) -> Result<Self, Self::Error> {
-        let _ = validate(&value)?;
-        Ok(Content(value))
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        validate(s)?;
+        Ok(Content(s.to_string()))
     }
 }
 
-impl TryFrom<&str> for Content {
-    type Error = Error;
-
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
-        let _ = validate(value)?;
-        Ok(Content(value.to_string()))
-    }
-}
-
-// Allow Content to be passed in to builder,
-// although that process is inefficient,
-// converting Content to String to Content again.
-impl From<Content> for String {
-    fn from(value: Content) -> String {
-        value.0
-    }
-}
-
-/// ```
-/// # use mdiu::*;
-/// let content = Content::new("gemblog").unwrap();
-/// let mut b = String::from("my ");
-/// b += content.as_ref();
-/// assert_eq!(b, "my gemblog");
-/// ```
 impl AsRef<str> for Content {
     fn as_ref(&self) -> &str {
         &self.0
@@ -154,4 +120,22 @@ fn validate(text: &str) -> crate::Result<()> {
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::*;
+
+    #[test]
+    fn errors() {
+        assert_eq!(
+            "my\r\ngemlog".parse::<Content>().err(),
+            Some(Error::InvalidContent)
+        );
+        assert_eq!(
+            "my\ngemlog".parse::<Content>().err(),
+            Some(Error::InvalidContent)
+        );
+        assert_eq!("".parse::<Content>().err(), Some(Error::EmptyContent));
+    }
 }

@@ -27,7 +27,7 @@
 //! # fn main() -> mdiu::Result<()> {
 //! use mdiu::{Block, Content, Gemtext, Level, Markup};
 //!
-//! let h1 = Block::Heading(Level::One, "my gemlog".try_into()?);
+//! let h1 = Block::Heading(Level::One, "my gemlog".parse()?);
 //! let text = Block::Text(Content::new("welcome")?);
 //! let doc = vec![h1, text];
 //!
