@@ -31,7 +31,7 @@
 //! let text = Block::Text(Content::new("welcome")?);
 //! let doc = vec![h1, text];
 //!
-//! let gemtext = <Gemtext>::markup(doc.iter());
+//! let gemtext = <Gemtext>::markup(&doc);
 //!
 //! assert_eq!(gemtext, "# my gemlog\nwelcome\n");
 //! # Ok(())
@@ -114,7 +114,9 @@ pub enum Level {
 pub trait Markup {
     // This takes an iter of Blocks so the formatter can handle adjacent Blocks,
     // for example wrapping lists with <ul> in HTML
-    fn markup<'a, I: Iterator<Item = &'a Block>>(iter: I) -> String;
+    fn markup<'a, I>(collection: I) -> String
+    where
+        I: IntoIterator<Item = &'a Block>;
 }
 
 /// Create [`Markup`]-formatted strings
@@ -138,7 +140,7 @@ where
     where
         F: Markup,
     {
-        <F>::markup(self.into_iter())
+        <F>::markup(self)
     }
 }
 

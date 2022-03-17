@@ -4,8 +4,8 @@ use super::{Block, Level, Markup};
 pub struct Html;
 
 impl Markup for Html {
-    fn markup<'a, I: Iterator<Item = &'a Block>>(iter: I) -> String {
-        let mut iter = iter.peekable();
+    fn markup<'a, T: IntoIterator<Item = &'a Block>>(collection: T) -> String {
+        let mut iter = collection.into_iter().peekable();
         let mut s = String::new();
 
         let mut state = State::Normal;
