@@ -153,11 +153,11 @@ impl Document {
     /// let mut builder = Document::new();
     /// builder = builder.h1("my site");
     ///
-    /// let homepage = builder.clone().build()?;
-    /// assert_eq!(&homepage.to_markup::<Gemtext>(), "# my site\n");
+    /// let homepage: Gemtext = builder.clone().build()?.into();
+    /// assert_eq!(homepage.to_string(), "# my site\n");
     ///
-    /// let article = builder.h2("my article").build()?;
-    /// assert_eq!(&article.to_markup::<Gemtext>(), "# my site\n## my article\n");
+    /// let article: Gemtext = builder.h2("my article").build()?.into();
+    /// assert_eq!(article.to_string(), "# my site\n## my article\n");
     /// # Ok(())
     /// # }
     /// ```

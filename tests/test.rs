@@ -46,7 +46,10 @@ more text
 * another item
 "#;
 
-    assert_eq!(expected, &kitchen_sink().unwrap().to_markup::<Gemtext>());
+    assert_eq!(
+        expected,
+        &(kitchen_sink().unwrap()).into::<Gemtext>().to_string()
+    );
 }
 
 #[cfg(feature = "html")]
@@ -76,7 +79,7 @@ fn html() {
 </ul>
 "#;
 
-    assert_eq!(expected, &kitchen_sink().unwrap().to_markup::<Html>());
+    assert_eq!(expected, &kitchen_sink().unwrap().into::<Html>());
 }
 
 #[cfg(feature = "markdown")]
@@ -109,5 +112,5 @@ more text
 * another item
 "#;
 
-    assert_eq!(expected, &kitchen_sink().unwrap().to_markup::<Markdown>());
+    assert_eq!(expected, &kitchen_sink().unwrap().into::<Markdown>());
 }

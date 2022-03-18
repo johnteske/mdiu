@@ -9,15 +9,15 @@
 //! Create a document with a builder
 //! ```
 //! # fn main() -> mdiu::Result<()> {
-//! use mdiu::{Document, Gemtext, ToMarkup};
+//! use mdiu::{Document, Gemtext};
 //!
-//! let gemtext = Document::new()
+//! let gemtext: Gemtext = Document::new()
 //!     .h1("my gemlog")
 //!     .text("welcome")
 //!     .build()?
-//!     .to_markup::<Gemtext>();
+//!     .into();
 //!
-//! assert_eq!(gemtext, "# my gemlog\nwelcome\n");
+//! assert_eq!(gemtext.to_string(), "# my gemlog\nwelcome\n");
 //! # Ok(())
 //! # }
 //! ```
@@ -25,15 +25,15 @@
 //! Create a document block by block
 //! ```
 //! # fn main() -> mdiu::Result<()> {
-//! use mdiu::{Block, Content, Gemtext, Level, Markup};
+//! use mdiu::{Block, Content, Gemtext, Level};
 //!
 //! let h1 = Block::Heading(Level::One, "my gemlog".parse()?);
 //! let text = Block::Text(Content::new("welcome")?);
 //! let doc = vec![h1, text];
 //!
-//! let gemtext = <Gemtext>::markup(&doc);
+//! let gemtext: Gemtext = doc.into();
 //!
-//! assert_eq!(gemtext, "# my gemlog\nwelcome\n");
+//! assert_eq!(gemtext.to_string(), "# my gemlog\nwelcome\n");
 //! # Ok(())
 //! # }
 //! ```
@@ -106,48 +106,6 @@ pub enum Level {
     Three,
 }
 
-/// Format an iterator of [`Block`]s
-///
-/// # Example
-///
-/// See example usage in [crate documentation](./index.html#examples).
-pub trait Markup {
-    // This takes an iter of Blocks so the formatter can handle adjacent Blocks,
-    // for example wrapping lists with <ul> in HTML
-    fn markup<'a, I>(collection: I) -> String
-    where
-        I: IntoIterator<Item = &'a Block>;
-}
-
-/// Create [`Markup`]-formatted strings
-///
-/// This trait is sealed and cannot be implemented for types outside this crate.
-///
-/// # Example
-///
-/// See example usage in [crate documentation](./index.html#examples).
-pub trait ToMarkup: private::Sealed {
-    fn to_markup<F>(self) -> String
-    where
-        F: Markup;
-}
-
-impl<'a, T> ToMarkup for T
-where
-    T: IntoIterator<Item = &'a Block>,
-{
-    fn to_markup<F>(self) -> String
-    where
-        F: Markup,
-    {
-        <F>::markup(self)
-    }
-}
-
-mod private {
-    use super::Block;
-
-    pub trait Sealed {}
-
-    impl<'a, T> Sealed for T where T: IntoIterator<Item = &'a Block> {}
-}
+// TODO I still might want a Markup trait
+// so format output is a String, not a newtype
+// and ToMarkup can still be a helper for &[Block]
