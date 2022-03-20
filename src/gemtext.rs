@@ -4,8 +4,8 @@ use super::{Block, Level, Markup};
 pub struct Gemtext;
 
 impl Markup for Gemtext {
-    fn markup<'a, T: IntoIterator<Item = &'a Block>>(collection: T) -> String {
-        collection
+    fn markup(blocks: &[Block]) -> String {
+        blocks
             .into_iter()
             .map(|block| match block {
                 Block::Text(text) => format!("{}\n", text),

@@ -114,9 +114,7 @@ pub enum Level {
 pub trait Markup {
     // This takes an iter of Blocks so the formatter can handle adjacent Blocks,
     // for example wrapping lists with <ul> in HTML
-    fn markup<'a, I>(collection: I) -> String
-    where
-        I: IntoIterator<Item = &'a Block>;
+    fn markup(blocks: &[Block]) -> String;
 }
 
 /// Create [`Markup`]-formatted strings
@@ -132,15 +130,15 @@ pub trait ToMarkup: private::Sealed {
         F: Markup;
 }
 
-impl<'a, T> ToMarkup for T
+impl<T> ToMarkup for T
 where
-    T: IntoIterator<Item = &'a Block>,
+    T: std::ops::Deref<Target = [Block]>,
 {
     fn to_markup<F>(self) -> String
     where
         F: Markup,
     {
-        <F>::markup(self)
+        <F>::markup(&self)
     }
 }
 
@@ -149,5 +147,5 @@ mod private {
 
     pub trait Sealed {}
 
-    impl<'a, T> Sealed for T where T: IntoIterator<Item = &'a Block> {}
+    impl<T> Sealed for T where T: std::ops::Deref<Target = [Block]> {}
 }
