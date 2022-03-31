@@ -6,7 +6,7 @@ pub struct Gemtext;
 impl Markup for Gemtext {
     fn markup(blocks: &[Block]) -> String {
         blocks
-            .into_iter()
+            .iter()
             .map(|block| match block {
                 Block::Text(text) => format!("{}\n", text),
                 Block::Link(link) => match link.label() {

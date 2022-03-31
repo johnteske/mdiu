@@ -90,7 +90,7 @@ fn markdown() {
 
 text
 
-[one link](one-link)
+* [one link](one-link)
 
 > quote
 
