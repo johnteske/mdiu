@@ -56,7 +56,9 @@ fn html() {
 <h2>section</h2>
 <h3>subsection</h3>
 <p>text</p>
-<p><a href="one-link">one link</a></p>
+<ul>
+<li><a href="one-link">one link</a></li>
+</ul>
 <blockquote>quote</blockquote>
 <pre>
 @_@
@@ -65,7 +67,9 @@ fn html() {
 <pre>
 @_@
 </pre>
-<p>one item</p>
+<ul>
+<li>one item</li>
+</ul>
 <ul>
 <li><a href="no-text">no-text</a></li>
 <li><a href="with-text">with text</a></li>
