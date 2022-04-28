@@ -2,7 +2,8 @@ use super::{Block, Level, Markup};
 
 /// A [Markdown 1.0.1] formatter, available with the `markdown` feature
 ///
-/// Links are formatted as list items
+/// Links are formatted as lists of links.
+///
 /// [Markdown 1.0.1]: https://daringfireball.net/projects/markdown/
 pub struct Markdown;
 
@@ -45,6 +46,7 @@ impl Markup for Markdown {
                         .collect();
                     format!("{}\n\n", lines)
                 }
+                // TODO
                 Block::Empty => "".to_string(),
             };
 

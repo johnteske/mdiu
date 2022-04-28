@@ -2,7 +2,7 @@ use super::{Block, Level, Markup};
 
 /// An HTML formatter, available with the `html` feature
 ///
-/// Links are formatted as list items
+/// Links are formatted as lists of links.
 pub struct Html;
 
 impl Markup for Html {
