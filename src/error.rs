@@ -12,7 +12,7 @@ impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Error::EmptyContent => {
-                write!(f, "invalid Content: contains newline characters")
+                write!(f, "invalid Content: empty")
             }
             Error::InvalidContent => {
                 write!(f, "invalid Content: contains newline characters")
